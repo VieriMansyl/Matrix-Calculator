@@ -4,6 +4,8 @@ public class driver_matrix {
 
     public static void main (String[] args) {
         Scanner input = new Scanner(System.in);
+        int m,n;
+        matrix M = new matrix();
 
         System.out.println();
         System.out.println("---------------------------------");
@@ -26,6 +28,7 @@ public class driver_matrix {
         }
 
         if (menu == 1) {
+            System.out.println();
             System.out.println("---------------------------------");
             System.out.println("            SUBMENU 1            ");
             System.out.println("---------------------------------");
@@ -45,7 +48,11 @@ public class driver_matrix {
             }
 
             if (submenu == 1) {
-
+                M.row = input.nextInt();
+                M.col = input.nextInt();
+                M.readMatrixKeyboard();
+                M.displayMatrix();
+                double det = M.detM_reduction();
             }
             else if (submenu == 2) {
 
@@ -63,6 +70,7 @@ public class driver_matrix {
         }
 
         else if (menu == 2) {
+            System.out.println();
             System.out.println("---------------------------------");
             System.out.println("            SUBMENU 2            ");
             System.out.println("---------------------------------");
@@ -80,7 +88,11 @@ public class driver_matrix {
             }
 
             if (submenu == 1) {
-
+                M.row = input.nextInt();
+                M.col = M.row;
+                M.readMatrixKeyboard();
+                double det = M.detM_reduction();
+                System.out.println(det);
             }
             else if (submenu == 2) {
 

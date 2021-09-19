@@ -1,8 +1,12 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class matrix {
 
     // Atribut
+    int row;
+    int col;
     double[][] Mat = new double[100][100];
 
     // Method
@@ -18,22 +22,46 @@ public class matrix {
     }
 
     // Prosedur input dari Keyboard
-    public void readMatrixKeyboard(int m, int n) {
+    public void readMatrixKeyboard() {
         Scanner input = new Scanner(System.in);
         int i,j;
-        for (i=0; i<m; i++) {
-            for (j=0; j<n; j++) {
-                System.out.printf("Matrix[%d][%d]",i, j); this.Mat[i][j] = input.nextInt();
+        for (i=0; i<this.row; i++) {
+            for (j=0; j<this.col; j++) {
+                System.out.printf("Matrix[%d][%d]",i, j); this.Mat[i][j] = input.nextDouble();
             }
         }
         input.close();
     }
 
+    // Prosedur input dari File
+    public void readMatrixFile(String pathname) {
+        try {
+            int i, j;
+            File matFile = new File(pathname);
+            Scanner fileRead = new Scanner(matFile);
+
+            i = 0;
+            while (fileRead.hasNextLine()) {
+                String data = fileRead.nextLine();
+                Scanner lineRead = new Scanner(data);
+                j = 0;
+                while (lineRead.hasNextDouble()) {
+                    this.Mat[i][j] = lineRead.nextDouble();
+                }
+                i++;
+            }fileRead.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
+
     // Prosedur output ke layar
-    public void displayMatrix(int m, int n) {
+    public void displayMatrix() {
         int i,j;
-        for (i=0; i<m; i++) {
-            for (j=0; j<n; j++) {
+        for (i=0; i<this.row; i++) {
+            for (j=0; j<this.col; j++) {
                 System.out.print(this.Mat[i][j]);
                 System.out.print(" ");
             }
@@ -94,7 +122,7 @@ public class matrix {
     }
 
     /*****konversi elemen menjadi 1 utama disesuaikan pada baris ke-row tersebut*****/
-    public static void bagi1utama(double[][] m , int row , int col , int colM){
+    public static void bagi1utama(double[][] m , int row , int col , int colM) {
         double pembagi;
         pembagi = m[row][col];
         for (col=0 ; col < colM ; col++){
@@ -167,18 +195,18 @@ public class matrix {
     }
     
     /*************************DETERMINAN*************************/
-    public static double detM_reduction(double[][] m , int rowM , int colM , int option){
+    public double detM_reduction(){
         double[][] new_M;
         double detM = 1;
         int j=0;
 
-        new_M = trianglebawah(m , rowM , colM , option);
-        for(int i=0; i < rowM ; i++){
-                detM *= new_M[i][j];
-                j++;
-            }
-        return detM;
+        new_M = trianglebawah(this.Mat, this.row, this.col, 2);
+        for(int i=0; i < this.row ; i++) {
+            detM *= new_M[i][j];
+            j++;
         }
+        return detM;
+
     }
 
 }
