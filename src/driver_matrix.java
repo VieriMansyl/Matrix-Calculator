@@ -4,7 +4,6 @@ public class driver_matrix {
 
     public static void main (String[] args) {
         Scanner input = new Scanner(System.in);
-        int m,n;
         matrix M = new matrix();
 
         System.out.println();
@@ -17,14 +16,22 @@ public class driver_matrix {
         System.out.println("4. Interpolasi polinom");
         System.out.println("5. Regresi linier berganda");
         System.out.println("6. Keluar");
+        System.out.println("7. File matriks");  // Ingat dihapus
         System.out.println("---------------------------------");
         System.out.print  ("Menu yang ingin dipilih: ");
         int menu = input.nextInt();
 
-        while (menu>6 || menu<1)
+        while (menu>7 || menu<1)
         {
             System.out.print("Ulangi menu yang ingin dipilih: ");
             menu = input.nextInt();
+        }
+
+        if (menu == 7) {
+            System.out.print("filename: ");
+            String filename = input.next();
+            M.readMatrixFile(filename);
+            M.displayMatrix();
         }
 
         if (menu == 1) {
@@ -51,8 +58,7 @@ public class driver_matrix {
                 M.row = input.nextInt();
                 M.col = input.nextInt();
                 M.readMatrixKeyboard();
-                M.displayMatrix();
-                double det = M.detM_reduction();
+
             }
             else if (submenu == 2) {
 
@@ -87,12 +93,17 @@ public class driver_matrix {
                 submenu = input.nextInt();
             }
 
+            System.out.println();
+
             if (submenu == 1) {
+                System.out.print("Masukkan n: ");
                 M.row = input.nextInt();
                 M.col = M.row;
                 M.readMatrixKeyboard();
                 double det = M.detM_reduction();
-                System.out.println(det);
+                System.out.printf("Nilai determinan matriks tersebut adalah %.2f", det);
+
+
             }
             else if (submenu == 2) {
 

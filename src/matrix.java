@@ -27,29 +27,33 @@ public class matrix {
         int i,j;
         for (i=0; i<this.row; i++) {
             for (j=0; j<this.col; j++) {
-                System.out.printf("Matrix[%d][%d]",i, j); this.Mat[i][j] = input.nextDouble();
+                this.Mat[i][j] = input.nextDouble();
             }
         }
         input.close();
     }
 
     // Prosedur input dari File
-    public void readMatrixFile(String pathname) {
+    public void readMatrixFile(String filename) {
         try {
-            int i, j;
+            int i=0, j=0;
+            String pathname = "test/" + filename;
             File matFile = new File(pathname);
             Scanner fileRead = new Scanner(matFile);
 
-            i = 0;
             while (fileRead.hasNextLine()) {
                 String data = fileRead.nextLine();
                 Scanner lineRead = new Scanner(data);
                 j = 0;
                 while (lineRead.hasNextDouble()) {
                     this.Mat[i][j] = lineRead.nextDouble();
+                    j++;
                 }
                 i++;
-            }fileRead.close();
+            }
+            this.row = i;
+            this.col = j;
+            fileRead.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -67,6 +71,11 @@ public class matrix {
             }
             System.out.println();
         }
+    }
+
+    // Prosedur output ke file
+    public void saveMatrix() {
+
     }
 
 
