@@ -142,8 +142,9 @@ public class matrix {
     /*****konversi kolom ke 0 disesuaikan pada baris ke-row tersebut*****/
     public static void makeZero(double[][] m , int row , int col , int colM , int pass){
         int j = col;
+        double divisor =  m[pass][j];
         while (j < colM){
-            m[row][j] -= (m[row][j] / m[pass][j]) * m[pass][j];
+            m[row][j] -= (m[row][j] / divisor) * m[pass][j];
             j++;
         }
     }
