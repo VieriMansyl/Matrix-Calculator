@@ -12,12 +12,6 @@ public class Main {
         printMenu();
         getMenu();
 
-        while (menu>7 || menu<1)
-        {
-            System.out.print("Ulangi menu yang ingin dipilih: ");
-            getMenu();
-        }
-
         if (menu == 7) {
             System.out.print("filename: ");
             String filename = input.next();
@@ -27,15 +21,7 @@ public class Main {
 
         if (menu == 1) {
             printSubmenu1();
-            getSubmenu();
-
-            while (submenu>5 || submenu<1)
-            {
-                System.out.print("Ulangi menu yang ingin dipilih: ");
-                getSubmenu();
-            }
-
-            System.out.println();
+            getSubmenu1();
 
             if (submenu == 1) {
 
@@ -50,8 +36,9 @@ public class Main {
                 System.out.print("Masukkan jumlah persamaan SPL: ");
                 m.row = input.nextInt();
                 m.col = m.row+1;
+                System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
                 m.readMatrixKeyboard();
-                m.solveCrammer();
+                m.solveCramer();
             }
             else {
                 main(args);
@@ -61,20 +48,13 @@ public class Main {
 
         else if (menu == 2) {
             printSubmenu2();
-            getSubmenu();
-
-            while (submenu>3 || submenu<1)
-            {
-                System.out.print("Ulangi menu yang ingin dipilih: ");
-                getSubmenu();
-            }
-
-            System.out.println();
+            getSubmenu2();
 
             if (submenu == 1) {
                 System.out.print("Masukkan n: ");
                 m.row = input.nextInt();
                 m.col = m.row;
+                System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
                 m.readMatrixKeyboard();
                 double det = m.detReduction();
                 System.out.printf("Nilai determinan matriks tersebut adalah %.2f", det);
@@ -151,10 +131,32 @@ public class Main {
 
     private static void getMenu() {
         menu = input.nextInt();
+        while (menu>7 || menu<1)
+        {
+            System.out.print("Ulangi menu yang ingin dipilih: ");
+            getMenu();
+        }
+        System.out.println();
     }
 
-    private static void getSubmenu() {
+    private static void getSubmenu1() {
         submenu = input.nextInt();
+        while (submenu>5 || submenu<1)
+        {
+            System.out.print("Ulangi menu yang ingin dipilih: ");
+            getSubmenu1();
+        }
+        System.out.println();
+    }
+
+    private static void getSubmenu2() {
+        submenu = input.nextInt();
+        while (submenu>3 || submenu<1)
+        {
+            System.out.print("Ulangi menu yang ingin dipilih: ");
+            getSubmenu2();
+        }
+        System.out.println();
     }
 
 }

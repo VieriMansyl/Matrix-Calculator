@@ -237,7 +237,7 @@ public class Matrix {
 
     }
 
-    public void solveCrammer() {
+    public void solveCramer() {
         int i, j;
         double[] detList = new double[this.col];
         double solutionValue;
