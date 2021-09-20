@@ -158,8 +158,9 @@ public class Matrix {
     public static void makeZero(double[][] m , int row , int col , int colM , int pass){
         int j = col;
         double divisor =  m[pass][j];
+        double divident = m[row][j];
         while (j < colM){
-            m[row][j] -= (m[row][j] / divisor) * m[pass][j];
+            m[row][j] -= (divident / divisor) * m[pass][j];
             j++;
         }
     }
@@ -193,6 +194,8 @@ public class Matrix {
                         //prekondisi : selalu berada dibawah 1 utama
                         //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
                         makeZero(m , row , colEff , colM , pass);
+                    }else if (!isChange){
+                        row = rowM;
                     }
                 }
             }
@@ -206,7 +209,7 @@ public class Matrix {
                     if(row > pass && isChange){
                         //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
                         makeZero(m , row , colEff , colM , pass);
-                    }else{
+                    }else if (!isChange){
                         //seluruh elemen di 1 kolom colEff bernilai 0
                         row = rowM;
                     }
