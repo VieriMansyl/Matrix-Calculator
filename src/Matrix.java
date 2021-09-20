@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class matrix {
+public class Matrix {
 
     // Atribut
     int row;
@@ -12,13 +12,28 @@ public class matrix {
     // Method
 
     // Konstruktor
-    matrix() {
+    Matrix() {
         int i,j;
         for (i=0; i<100; i++) {
             for (j=0; j<100; j++) {
                 this.Mat[i][j] = 0;
             }
         }
+    }
+
+    // Copy Matrix
+    public Matrix getCopy() {
+        Matrix m = new Matrix();
+        m.row = this.row;
+        m.col = this.col;
+
+        for (int i=0; i<m.row; i++) {
+            for (int j=0; j<m.col; j++) {
+                m.Mat[i][j] = this.Mat[i][j];
+            }
+        }
+
+        return m;
     }
 
     // Prosedur input dari Keyboard
@@ -205,7 +220,7 @@ public class matrix {
     }
     
     /*************************DETERMINAN*************************/
-    public double detM_reduction(){
+    public double detReduction(){
         double[][] new_M;
         double detM = 1;
         int j=0;
@@ -217,6 +232,27 @@ public class matrix {
         }
         return detM;
 
+    }
+
+    public void solveCrammer() {
+        int i, j;
+        double[] detList = new double[this.col];
+        double solutionValue;
+
+        Matrix MCopy = this.getCopy();
+        MCopy.col = MCopy.col-1;
+        detList[0] = MCopy.detReduction();
+
+        for (j=0; j<MCopy.col; j++) {
+            MCopy = this.getCopy();
+            MCopy.col = MCopy.col-1;
+            for (i=0; i<MCopy.row; i++) {
+                MCopy.Mat[i][j] = this.Mat[i][this.col-1];
+            }
+            detList[j+1] = MCopy.detReduction();
+            solutionValue = detList[j+1]/detList[0];
+            System.out.printf("x%d = %.2f\n", j+1, solutionValue);
+        }
     }
 
 }
