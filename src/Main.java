@@ -81,7 +81,15 @@ public class Main {
             getSubmenu3();
 
             if (submenu == 1) {
-
+                System.out.print("Masukkan n: ");
+                m.row = input.nextInt();
+                m.col = m.row;
+                m.readMatrixKeyboard();
+                Matrix Mnew = new Matrix();
+                Mnew.row = m.row-1;
+                Mnew.col = m.col-1;
+                Mnew = m.InversAdjoin();
+                Mnew.displayMatrix();
             }
             else if (submenu == 2) {
 
@@ -156,6 +164,7 @@ public class Main {
         System.out.println("---------------------------------");
         System.out.println("1. Metode umum");
         System.out.println("2. Metode eliminasi Gauss-Jordan");
+        System.out.println("3. Kembali ke menu utama");
         System.out.println("---------------------------------");
         System.out.print  ("Submenu yang ingin dipilih: ");
     }
