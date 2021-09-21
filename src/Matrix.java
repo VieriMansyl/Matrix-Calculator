@@ -257,4 +257,91 @@ public class Matrix {
         }
     }
 
+    public void getCofactor(double [][]mat, double [][]temp, int rows, int cols, int dims){
+        int i=0,j=0,nrow,ncol;
+        for(nrow = 0; nrow<dims;nrow++){
+            for(ncol = 0; ncol<dims;ncol++){
+                if(nrow!=rows && ncol !=cols){
+                    temp[i][j] = mat[nrow][ncol];
+                    j++;
+                    if(j==dims-1){
+                        j=0;
+                        i++;
+                    }
+                }
+            }
+        }
+    }
+
+    public double detCofactor(double [][]mat,int dim){
+        double det = 0;
+        if(dim==1)
+            return mat[0][0];
+        if(dim==2){
+            return(mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0]);
+        }
+        double [][]temp = new double [100][100];
+        int cons = 1,k;
+
+        for (k=0;k<dim;k++){
+            getCofactor(mat,temp,0,k,dim);
+            det += cons*mat[0][k]* detCofactor(temp,dim-1);
+            cons *= -1;
+        }
+        return det;
+    }
+
+    public Matrix CreateIdentity(){
+        Matrix m = new Matrix();
+        m.row = this.row;
+        m.col = this.col;
+
+        for (int i=0; i<m.row; i++) {
+            for (int j=0; j<m.col; j++) {
+                if(i!=j){
+                    m.Mat[i][j] = 0;
+                }
+                else {
+                    m.Mat[i][j] = 1;
+                }
+            }
+        }
+
+        return m;
+    }
+
+    public Matrix InversAdjoin(){
+        //Prekondisi determinan !=0
+        Matrix m = new Matrix();
+        m.row = this.row;
+        m.col = this.col;
+        int cons;
+
+        double determinant = this.detCofactor(this.Mat,this.row);
+
+        Matrix temp = new Matrix();
+        temp.row = m.row-1;
+        temp.col = m.col-1;
+        for(int i=0; i<m.row;i++){
+            for(int j=0; j<m.col;j++){
+                temp.getCofactor(this.Mat,temp.Mat,i,j,this.row);
+                if ((i+j)%2 == 0){
+                    cons = 1;
+                }
+                else{
+                    cons = -1;
+                }
+                double det = temp.detCofactor(temp.Mat,temp.row);
+                m.Mat[i][j] = cons*det;
+            }
+        }
+
+        for(int p=0; p<m.row;p++) {
+            for (int q = 0; q < m.col; q++) {
+                m.Mat[p][q] /=  determinant;
+            }
+        }
+        return m;
+    }
+
 }

@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
 
     private static Scanner input;
-    private static int menu, submenu1, submenu2, inputChoice;
+    private static int menu, submenu1, submenu2, submenu3, inputChoice;
     private static String pathname;
 
     public static void main (String[] args) {
@@ -12,6 +12,13 @@ public class Main {
 
         printMenu();
         getMenu();
+
+        if (menu == 7) {
+            System.out.print("filename: ");
+            String filename = input.next();
+            m.readMatrixFile(filename);
+            m.displayMatrix();
+        }
 
         if (menu == 1) {
             printSubmenu1();
@@ -66,7 +73,12 @@ public class Main {
 
             }
             else if (submenu2 == 2) {
-
+                System.out.print("Masukkan n: ");
+                m.row = input.nextInt();
+                m.col = m.row;
+                m.readMatrixKeyboard();
+                double det = m.detCofactor(m.Mat,m.row);
+                System.out.printf("Nilai determinan matriks tersebut adalah %.2f",det);
             }
             else {
                 main(null);
@@ -74,7 +86,27 @@ public class Main {
         }
 
         else if (menu == 3) {
+            printSubmenu3();
+            getSubmenu3();
 
+            if (submenu3 == 1) {
+                System.out.print("Masukkan n: ");
+                m.row = input.nextInt();
+                m.col = m.row;
+                m.readMatrixKeyboard();
+                Matrix Mnew = new Matrix();
+                Mnew.row = m.row-1;
+                Mnew.col = m.col-1;
+                Mnew = m.InversAdjoin();
+                Mnew.displayMatrix();
+            }
+            else if (submenu3 == 2) {
+
+            }
+
+            else {
+                main(args);
+            }
         }
 
         else if (menu == 4) {
@@ -126,7 +158,18 @@ public class Main {
         System.out.println("            SUBMENU 2            ");
         System.out.println("---------------------------------");
         System.out.println("1. Metode reduksi baris");
-        System.out.println("2. Metode Eliminasi Gauss-Jordan");
+        System.out.println("2. Metode ekspansi kofaktor");
+        System.out.println("3. Kembali ke menu utama");
+        System.out.println("---------------------------------");
+    }
+
+    public static void printSubmenu3() {
+        System.out.println();
+        System.out.println("---------------------------------");
+        System.out.println("            SUBMENU 3            ");
+        System.out.println("---------------------------------");
+        System.out.println("1. Metode umum");
+        System.out.println("2. Metode eliminasi Gauss-Jordan");
         System.out.println("3. Kembali ke menu utama");
         System.out.println("---------------------------------");
     }
@@ -147,7 +190,7 @@ public class Main {
         submenu1 = input.nextInt();
         while (submenu1 > 5 || submenu1 < 1)
         {
-            System.out.print("Ulangi menu yang ingin dipilih: ");
+            System.out.print("Ulangi submenu yang ingin dipilih: ");
             submenu1 = input.nextInt();
         }
         System.out.println();
@@ -158,7 +201,7 @@ public class Main {
         submenu2 = input.nextInt();
         while (submenu2 > 3 || submenu2 < 1)
         {
-            System.out.print("Ulangi menu yang ingin dipilih: ");
+            System.out.print("Ulangi submenu yang ingin dipilih: ");
             submenu2 = input.nextInt();
         }
         System.out.println();
@@ -184,6 +227,17 @@ public class Main {
         while (!(inputChoice == 1 || inputChoice == 2)) {
             System.out.print("Ulangi metode yang ingin dipilih: ");
             inputChoice = input.nextInt();
+        }
+        System.out.println();
+    }
+
+    private static void getSubmenu3() {
+        System.out.print("Submenu yang ingin dipilih: ");
+        submenu3 = input.nextInt();
+        while (submenu3>2 || submenu3<1)
+        {
+            System.out.print("Ulangi submenu yang ingin dipilih: ");
+            submenu3 = input.nextInt();
         }
         System.out.println();
     }
