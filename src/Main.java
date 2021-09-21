@@ -207,6 +207,17 @@ public class Main {
         System.out.println();
     }
 
+    private static void getSubmenu3() {
+        System.out.print("Submenu yang ingin dipilih: ");
+        submenu3 = input.nextInt();
+        while (submenu3>2 || submenu3<1)
+        {
+            System.out.print("Ulangi submenu yang ingin dipilih: ");
+            submenu3 = input.nextInt();
+        }
+        System.out.println();
+    }
+
     private static void getPathname() {
         System.out.print("Filename: ");
         String filename = input.next();
@@ -227,17 +238,6 @@ public class Main {
         while (!(inputChoice == 1 || inputChoice == 2)) {
             System.out.print("Ulangi metode yang ingin dipilih: ");
             inputChoice = input.nextInt();
-        }
-        System.out.println();
-    }
-
-    private static void getSubmenu3() {
-        System.out.print("Submenu yang ingin dipilih: ");
-        submenu3 = input.nextInt();
-        while (submenu3>2 || submenu3<1)
-        {
-            System.out.print("Ulangi submenu yang ingin dipilih: ");
-            submenu3 = input.nextInt();
         }
         System.out.println();
     }
