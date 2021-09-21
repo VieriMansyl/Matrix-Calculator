@@ -45,7 +45,7 @@ public class Matrix {
                 this.Mat[i][j] = input.nextDouble();
             }
         }
-        input.close();
+        //input.close();
     }
 
     // Prosedur input dari File

@@ -69,16 +69,18 @@ public class Main {
                 }
 
                 double det = m.detReduction();
-                System.out.printf("Nilai determinan matriks tersebut adalah %.2f", det);
+                System.out.printf("Nilai determinan matriks tersebut adalah %.4f", det);
+                System.out.println();
 
             }
             else if (submenu2 == 2) {
                 System.out.print("Masukkan n: ");
                 m.row = input.nextInt();
                 m.col = m.row;
+                System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
                 m.readMatrixKeyboard();
                 double det = m.detCofactor(m.Mat,m.row);
-                System.out.printf("Nilai determinan matriks tersebut adalah %.2f",det);
+                System.out.printf("Nilai determinan matriks tersebut adalah %.4f\n",det);
             }
             else {
                 main(null);
@@ -93,6 +95,7 @@ public class Main {
                 System.out.print("Masukkan n: ");
                 m.row = input.nextInt();
                 m.col = m.row;
+                System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
                 m.readMatrixKeyboard();
                 Matrix Mnew = new Matrix();
                 Mnew.row = m.row-1;
@@ -244,13 +247,14 @@ public class Main {
 
     private static void askRepeat() {
         System.out.println();
-        System.out.println();
         System.out.println("Apakah ingin mengulangi program? (Y/N)");
         String repeat = input.next();
+
         while (!(repeat.equalsIgnoreCase("Y") || repeat.equalsIgnoreCase("N"))) {
             System.out.println("Mohon ulangi input yang valid; apakah anda ingin mengulangi program? (Y/N)");
             repeat = input.next();
         }
+
         if (repeat.equalsIgnoreCase("Y")) {
             main(null);
         }
