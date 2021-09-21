@@ -68,13 +68,28 @@ public class Main {
                 double det = m.detCofactor(m.Mat,m.row);
                 System.out.printf("Nilai determinan matriks tersebut adalah %.2f",det);
             }
+
+
+
             else {
                 main(args);
             }
         }
 
         else if (menu == 3) {
+            printSubmenu3();
+            getSubmenu3();
 
+            if (submenu == 1) {
+
+            }
+            else if (submenu == 2) {
+
+            }
+
+            else {
+                main(args);
+            }
         }
 
         else if (menu == 4) {
@@ -134,6 +149,19 @@ public class Main {
         System.out.print  ("Submenu yang ingin dipilih: ");
     }
 
+    public static void printSubmenu3() {
+        System.out.println();
+        System.out.println("---------------------------------");
+        System.out.println("            SUBMENU 3            ");
+        System.out.println("---------------------------------");
+        System.out.println("1. Metode umum");
+        System.out.println("2. Metode eliminasi Gauss-Jordan");
+        System.out.println("---------------------------------");
+        System.out.print  ("Submenu yang ingin dipilih: ");
+    }
+
+
+
     private static void getMenu() {
         menu = input.nextInt();
         while (menu>7 || menu<1)
@@ -160,6 +188,16 @@ public class Main {
         {
             System.out.print("Ulangi menu yang ingin dipilih: ");
             getSubmenu2();
+        }
+        System.out.println();
+    }
+
+    private static void getSubmenu3() {
+        submenu = input.nextInt();
+        while (submenu>2 || submenu<1)
+        {
+            System.out.print("Ulangi menu yang ingin dipilih: ");
+            getSubmenu3();
         }
         System.out.println();
     }
