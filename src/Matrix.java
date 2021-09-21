@@ -49,10 +49,9 @@ public class Matrix {
     }
 
     // Prosedur input dari File
-    public void readMatrixFile(String filename) {
+    public void readMatrixFile(String pathname) {
         try {
             int i=0, j=0;
-            String pathname = "test/" + filename;
             File matFile = new File(pathname);
             Scanner fileRead = new Scanner(matFile);
 
