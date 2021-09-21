@@ -128,7 +128,7 @@ public class Main {
         System.out.println("            SUBMENU 2            ");
         System.out.println("---------------------------------");
         System.out.println("1. Metode reduksi baris");
-        System.out.println("2. Metode Eliminasi Gauss-Jordan");
+        System.out.println("2. Metode Ekspansi kofaktor");
         System.out.println("3. Kembali ke menu utama");
         System.out.println("---------------------------------");
         System.out.print  ("Submenu yang ingin dipilih: ");
