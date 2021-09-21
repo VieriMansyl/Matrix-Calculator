@@ -61,7 +61,12 @@ public class Main {
 
             }
             else if (submenu == 2) {
-
+                System.out.print("Masukkan n: ");
+                m.row = input.nextInt();
+                m.col = m.row;
+                m.readMatrixKeyboard();
+                double det = m.detCofactor(m.Mat,m.row);
+                System.out.printf("Nilai determinan matriks tersebut adalah %.2f",det);
             }
             else {
                 main(args);

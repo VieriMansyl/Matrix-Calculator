@@ -258,4 +258,36 @@ public class Matrix {
         }
     }
 
+    public void getCofactor(double [][]mat, double [][]temp, int rows, int cols, int dims){
+        int i=0,j=0,nrow,ncol;
+        for(nrow = 0; nrow<dims;nrow++){
+            for(ncol = 0; ncol<dims;ncol++){
+                if(nrow!=rows && ncol !=cols){
+                    temp[i][j++] = mat[nrow][ncol];
+                    if(j==dims-1){
+                        j=0;
+                        i++;
+                    }
+                }
+            }
+        }
+    }
+
+    public double detCofactor(double [][]mat,int dim){
+        double det = 0;
+        if(dim==1)
+            return mat[0][0];
+        if(dim==2){
+            return(mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0]);
+        }
+        double [][]temp = new double [100][100];
+        int cons = 1,k;
+
+        for (k=0;k<dim;k++){
+            getCofactor(mat,temp,0,k,dim);
+            det += cons*mat[0][k]* detCofactor(temp,dim-1);
+            cons *= -1;
+        }
+        return det;
+    }
 }
