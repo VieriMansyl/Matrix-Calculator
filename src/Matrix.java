@@ -164,77 +164,77 @@ public class Matrix {
         }
     }
     
-    /************************membentuk matriks segitiga bawah************************/
-    
-    public static double[][] trianglebawah (double[][] m , int rowM , int colM , int option) {
-        //option 1 = SPL dengan metode gauss
-        //option 2 = menentukan determinan dengan OBE
+    /************************gauss************************/
+
+    public double[][] gauss(){
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
         int row;                    //membaca tiap baris matriks m
         int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
 
+        Matrix m = this.getCopy();
 
-        for (pass=0 ; pass < rowM ; pass++){
+        for (pass=0 ; pass < this.row ; pass++){
             row = pass;
             boolean isChange = true;
 
-            //untuk eliminasi gauss
-            if (option == 1){
-                for (row=pass ; row < rowM ; row++){
-                    if(m[row][colEff]==0 && row==pass){
-                        //mengecek apabila m[row][col] = 0
-                        isChange = changeplace(m , rowM , colM , row , colEff);
-                    }
-                    if(row==pass && m[row][colEff]!=1 && m[row][colEff]!=0){
-                        //m[row][col] bukan 1 utama dan bukan 0 serta bukan tepat di bawah sebuah 1 utama
-                        bagi1utama(m , row , colEff , colM);
-                    }
-                    if(row > pass && isChange){
-                        //prekondisi : selalu berada dibawah 1 utama
-                        //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
-                        makeZero(m , row , colEff , colM , pass);
-                    }else if (!isChange){
-                        row = rowM;
-                    }
+            while (row < this.row) {
+                if (m.Mat[row][colEff] == 0 && row == pass) {
+                    //mengecek apabila m[row][col] = 0
+                    isChange = changeplace(m.Mat, this.row, this.col, row, colEff);
                 }
+                if (row == pass && m.Mat[row][colEff] != 1 && this.Mat[row][colEff] != 0) {
+                    //m[row][col] bukan 1 utama dan bukan 0 serta bukan tepat di bawah sebuah 1 utama
+                    bagi1utama(m.Mat, row, colEff, this.col);
+                }
+                if (row > pass && isChange) {
+                    //prekondisi : selalu berada dibawah 1 utama
+                    //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
+                    makeZero(m.Mat, row, colEff, this.col, pass);
+                } else if (!isChange) {
+                    row = this.row;
+                }
+                row++;
             }
-            //untuk determinan dengan metode reduksi baris elementer
-            else if(option == 2){
-                while (row < rowM){
-                    if(m[row][colEff]==0 && row==pass){
-                        //mengecek apabila m[row][col] = 0
-                        isChange = changeplace(m , rowM , colM , row , colEff);
-                    }
-                    if(row > pass && isChange){
-                        //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
-                        makeZero(m , row , colEff , colM , pass);
-                    }else if (!isChange){
-                        //seluruh elemen di 1 kolom colEff bernilai 0
-                        row = rowM;
-                    }
-                    row++;
+            colEff++;
+        }
+        return m.Mat;
+    }
+
+    /*************************DETERMINAN*************************/
+    public double detReduction () {
+        int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
+        int row;                    //membaca tiap baris matriks m
+        int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
+        double detM = 1;
+
+        Matrix m = this.getCopy();
+
+        for (pass=0 ; pass < this.row ; pass++){
+            row = pass;
+            boolean isChange = true;
+
+            while (row < this.row) {
+                if (m.Mat[row][colEff] == 0 && row == pass) {
+                    //mengecek apabila m[row][col] = 0
+                    isChange = changeplace(m.Mat, this.row, this.col, row, colEff);
                 }
+                if (row > pass && isChange) {
+                    //prekondisi : selalu berada dibawah 1 utama
+                    //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
+                    makeZero(m.Mat, row, colEff, this.col, pass);
+                } else if (!isChange) {
+                    row = this.row;
+                }
+                row++;
             }
             colEff++;
         }
 
-        return m;
-    }
-    
-    /*************************DETERMINAN*************************/
-    public double detReduction(){
-        double[][] new_M;
-        double detM = 1;
-        int j=0;
+        for(int i=0; i < this.row ; i++)    {detM *= m.Mat[i][i];}
 
-        new_M = trianglebawah(this.Mat, this.row, this.col, 2);
-        for(int i=0; i < this.row ; i++) {
-            detM *= new_M[i][j];
-            j++;
-        }
         return detM;
-
     }
+
 
     public void solveCramer() {
         int i, j;
