@@ -113,7 +113,17 @@ public class Main {
         }
 
         else if (menu == 4) {
-
+            System.out.print("Masukkan n: ");
+            m.row = input.nextInt();
+            m.col = 2;
+            System.out.printf("Masukkan point:\n");
+            m.readMatrixKeyboard();
+            double x;
+            System.out.printf("Masukkan x:\n");
+            x = input.nextDouble();
+            double result;
+            result = m.InterpolasiPolinom(x);
+            System.out.printf("P(%f):%f\n",x,result);
         }
 
         else if (menu == 5) {
@@ -213,7 +223,7 @@ public class Main {
     private static void getSubmenu3() {
         System.out.print("Submenu yang ingin dipilih: ");
         submenu3 = input.nextInt();
-        while (submenu3>2 || submenu3<1)
+        while (submenu3>3 || submenu3<1)
         {
             System.out.print("Ulangi submenu yang ingin dipilih: ");
             submenu3 = input.nextInt();
