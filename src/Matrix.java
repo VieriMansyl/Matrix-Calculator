@@ -379,4 +379,52 @@ public class Matrix {
         return m;
     }
 
+    public double Pangkat(double x, int y){
+        if (y==1){
+            return x;
+        }
+        else if(y==2){
+            return(x*x);
+        }
+        else if(y==0){
+            return 1;
+        }
+        return (x*(Pangkat(x,y-1)));
+    }
+
+    public double InterpolasiPolinom(double x) {
+        Matrix L = new Matrix();
+        L.row = this.row;
+        L.col = 4;
+
+        for (int i = 0; i < L.row; i++) {
+            L.Mat[i][0] = 1;
+        }
+
+        for (int j = 0; j < L.row; j++) {
+            L.Mat[j][1] = this.Mat[j][0];
+        }
+
+        for (int k = 0; k < L.row; k++) {
+            L.Mat[k][2] = this.Mat[k][0] * this.Mat[k][0];
+        }
+        for (int l = 0; l < L.row; l++) {
+            L.Mat[l][3] = this.Mat[l][1];
+        }
+        L.Mat = L.gauss();
+        for (int p = 0; p < L.row - 1; p++) {
+            for (int r = p + 1; r < L.row; r++) {
+                double ratio = L.Mat[p][r];
+                L.Mat[p][3] -= ratio * L.Mat[r][3];
+                for (int s = 0; s < L.col - 1; s++) {
+                    L.Mat[p][s] -= ratio * L.Mat[r][s];
+                }
+            }
+        }
+        double result = 0;
+        for (int a = 0; a < row; a++) {
+            result += L.Mat[a][3] * Pangkat(x,a);
+        }
+        return result;
+    }
 }
