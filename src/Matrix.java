@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Matrix {
@@ -20,6 +21,7 @@ public class Matrix {
             }
         }
     }
+
 
     // Copy Matrix
     public Matrix getCopy() {
@@ -100,14 +102,12 @@ public class Matrix {
     //reduksi baris (A)                     - done
 
 
-    //eliminasi gauss
-    
-    /*****Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak***/
-    public static int isColZero(double[][] m , int row , int rowM , int col){
+    //Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak
+    public int isColZero(int row , int col){
         boolean isfound = false;
 
-        while (row < rowM && !isfound){
-            if(m[row][col]!=0){
+        while (row < this.row && !isfound){
+            if(this.Mat[row][col]!=0){
                 isfound = true;
             }else{
                 row++;
@@ -115,56 +115,69 @@ public class Matrix {
         }
         return row;
     }
-    /*****Menentukan apakah seluruh elemen baris ke-row bernilai 0 atau tidak***/
-    public static boolean isRowZero(double[][] m , int row , int colM){
+    //Menentukan apakah seluruh elemen baris ke-row bernilai 0 atau tidak
+    public boolean isRowZero(int row , int colM){
         boolean foundvalue = false;
-        int col=0;
+        int col = 0;
         while(col < colM){
-            if(m[row][col]!=0)  {foundvalue = true;}
+            if(this.Mat[row][col]!=0)  {foundvalue = true;}
             else                {col++;}
         }
         return foundvalue;
     }
 
-    /*****Menukar baris dengan elemen terdefinisi pada kolom ke-col*****/
-    public static boolean changeplace(double[][] m ,int rowM , int colM , int row , int col){
+    //Mencari kolom yang memiliki 1 utama pada baris ke-row
+    public int get1Utama(int row){
+        int col = 0;
+        boolean found = false;
+        while (col < (this.col-1) && !found){
+            if(this.Mat[row][col]==1)   {found = true;}
+            else                        {col++;}
+        }
+        return col;
+    }
+
+    //Menukar baris dengan elemen terdefinisi pada kolom ke-col
+    public boolean changeplace(int row , int col){
         int change_row;
         double temp;
         boolean ischange = false;
         
-        change_row = isColZero(m , row , rowM , col);
-        if (change_row != row){
+        change_row = this.isColZero(row , col);
+        if ((change_row != row) && (change_row != this.row)){
             ischange = true;
-            for (col=0 ; col < colM ; col++){
-                temp = m[change_row][col];
-                m[change_row][col] = m[row][col];
-                m[row][col] = temp;
+            for (col=0 ; col < this.col ; col++){
+                temp                        = this.Mat[change_row][col];
+                this.Mat[change_row][col]   = this.Mat[row][col];
+                this.Mat[row][col]          = temp;
             }
         }
         return ischange;
     }
 
-    /*****konversi elemen menjadi 1 utama disesuaikan pada baris ke-row tersebut*****/
-    public static void bagi1utama(double[][] m , int row , int col , int colM) {
+    //konversi elemen menjadi 1 utama disesuaikan pada baris ke-row tersebut
+    public void bagi1utama(int row , int col) {
         double pembagi;
-        pembagi = m[row][col];
-        for (col=0 ; col < colM ; col++){
-            m[row][col] /= pembagi;
+        pembagi = this.Mat[row][col];
+        for (col=0 ; col < this.col ; col++){
+            this.Mat[row][col] /= pembagi;
         }
     }
     
-    /*****konversi kolom ke 0 disesuaikan pada baris ke-row tersebut*****/
-    public static void makeZero(double[][] m , int row , int col , int colM , int pass){
+    //konversi kolom ke 0 disesuaikan pada baris ke-row tersebut
+    public void makeZero(int row , int col , int pass){
         int j = col;
-        double divisor =  m[pass][j];
-        double divident = m[row][j];
-        while (j < colM){
-            m[row][j] -= (divident / divisor) * m[pass][j];
+        double divisor =  this.Mat[pass][j];
+        double divident = this.Mat[row][j];
+        while (j < this.col){
+            this.Mat[row][j] -= (divident / divisor) * this.Mat[pass][j];
             j++;
         }
     }
-    
-    /************************gauss************************/
+
+
+
+    /************************ Gauss ************************/
 
     public double[][] gauss(){
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
@@ -180,16 +193,16 @@ public class Matrix {
             while (row < this.row) {
                 if (m.Mat[row][colEff] == 0 && row == pass) {
                     //mengecek apabila m[row][col] = 0
-                    isChange = changeplace(m.Mat, this.row, this.col, row, colEff);
+                    isChange = m.changeplace(row, colEff);
                 }
                 if (row == pass && m.Mat[row][colEff] != 1 && this.Mat[row][colEff] != 0) {
                     //m[row][col] bukan 1 utama dan bukan 0 serta bukan tepat di bawah sebuah 1 utama
-                    bagi1utama(m.Mat, row, colEff, this.col);
+                    m.bagi1utama(row, colEff);
                 }
                 if (row > pass && isChange) {
                     //prekondisi : selalu berada dibawah 1 utama
                     //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
-                    makeZero(m.Mat, row, colEff, this.col, pass);
+                    m.makeZero(row, colEff,pass);
                 } else if (!isChange) {
                     row = this.row;
                 }
@@ -200,7 +213,29 @@ public class Matrix {
         return m.Mat;
     }
 
-    /*************************DETERMINAN*************************/
+    /************************ SPL with Gauss ************************/
+    public void solveGauss(){
+        int total_1utama = 0;
+        int row;
+        int col = 0;
+        boolean found;
+
+        //menghitung banyak 1 utama
+        for (row = 0; row < this.row ; row++){
+                if(this.isRowZero(row , this.col-1) && this.Mat[row][this.col-1] != 0){              //tidak ada solusi
+                    System.out.println("SPL ini tidak ada solusi.");
+                } else if(this.isRowZero(row , this.col-1) && this.Mat[row][this.col-1] == 0){       //banyak solusi
+                    //banyak solusi
+                }else{                                                                  //solusi unik
+                    //solusi unik
+                }
+        }
+
+
+
+    }
+
+    /************************* DETERMINAN *************************/
     public double detReduction () {
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
         int row;                    //membaca tiap baris matriks m
@@ -216,12 +251,12 @@ public class Matrix {
             while (row < this.row) {
                 if (m.Mat[row][colEff] == 0 && row == pass) {
                     //mengecek apabila m[row][col] = 0
-                    isChange = changeplace(m.Mat, this.row, this.col, row, colEff);
+                    isChange = m.changeplace(row, colEff);
                 }
                 if (row > pass && isChange) {
                     //prekondisi : selalu berada dibawah 1 utama
                     //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
-                    makeZero(m.Mat, row, colEff, this.col, pass);
+                    m.makeZero(row, colEff, pass);
                 } else if (!isChange) {
                     row = this.row;
                 }
