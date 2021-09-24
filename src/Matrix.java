@@ -373,14 +373,43 @@ public class Matrix {
         return det;
     }
 
+    public Matrix MatrixInvalid(){
+        Matrix m = new Matrix();
+        m.row = this.row;
+        m.col = this.col;
+        for(int i=0; i<row; i++){
+            for(int j=0; j<col;j++){
+                m.Mat[i][j] = -999;
+            }
+        }
+        return m;
+    }
+
+    public boolean isMatrixInvalid(){
+        boolean flag = true;
+        int i=0,j=0;
+        while (i<this.row && flag == true){
+            while(j<this.col && flag == true){
+                if (this.Mat[i][j] != -999){
+                    flag = false;
+                }
+                j++;
+            }
+            i++;
+        }
+        return flag;
+    }
+
     public Matrix InverseAdjoin(){
-        //Prekondisi determinan !=0
         Matrix m = new Matrix();
         m.row = this.row;
         m.col = this.col;
         int cons;
 
         double determinant = this.detCofactor(this.Mat,this.row);
+        if (determinant == 0){
+            return (this.MatrixInvalid());
+        }
 
         Matrix temp = new Matrix();
         temp.row = m.row-1;
@@ -420,6 +449,10 @@ public class Matrix {
         aug.row = this.row;
         aug.col = this.col*2;
 
+        Matrix validity= new Matrix();
+        validity.row = this.row;
+        validity.col = this.col;
+
         //create Identity
         Matrix I = new Matrix();
         I.row = this.row;
@@ -448,15 +481,43 @@ public class Matrix {
         }
         aug.gaussJordan();
 
-        Matrix result= new Matrix();
-        result.row = I.row;
-        result.col = I.col;
-        for (int i=0; i<result.row;i++){
-            for(int j=0; j<result.col;j++){
-                result.Mat[i][j] = aug.Mat[i][I.col+j];
+        for (int i=0; i<validity.row; i++){
+            for(int j=0; j<validity.col; j++){
+                validity.Mat[i][j] = aug.Mat[i][j];
             }
         }
-        return result;
+
+        int zero=0;
+        boolean isZero=false;
+        for(int i=0; i<validity.row; i++){
+            for(int j=0; j<validity.col; j++){
+                if(validity.Mat[i][j]==0){
+                    zero+=1;
+                }
+            }
+            if (zero == validity.col){
+                isZero = true;
+                break;
+            }
+            else{
+                zero=0;
+            }
+        }
+        if (isZero){
+            return I.MatrixInvalid();
+        }
+        else{
+            Matrix result= new Matrix();
+            result.row = I.row;
+            result.col = I.col;
+            for (int i=0; i<result.row;i++){
+                for(int j=0; j<result.col;j++){
+                    result.Mat[i][j] = aug.Mat[i][I.col+j];
+                }
+            }
+            return result;
+        }
+
     }
 
     public double Pangkat(double x, int y){
