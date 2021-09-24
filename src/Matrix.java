@@ -264,7 +264,7 @@ public class Matrix {
         }
     }
 
-    /************************ SPL with Gauss ************************/
+    /**************************** SPL  ****************************/
     public void solveGauss(){
 
         boolean noSolution = (this.isRowZero(this.row-1 , this.col-1) && this.Mat[this.row-1][this.col-1] != 0);
@@ -279,6 +279,59 @@ public class Matrix {
         } else{     //banyak solusi ataupun solusi unik
             solusi = this.getValue();
             solusi.displayMatrix();
+        }
+    }
+
+    public void solveInverse(){
+        Matrix SPL= new Matrix();
+        SPL.row = this.row;
+        SPL.col = SPL.row;
+
+        Matrix rs = new Matrix();
+        rs.row = this.row;
+        rs.col =1;
+
+        Matrix result = new Matrix();
+        result.row = SPL.row;
+        result.col = rs.col;
+
+        for(int i=0; i<SPL.row;i++){
+            rs.Mat[i][0] = this.Mat[i][this.col-1];
+            for(int j=0; j<SPL.col; j++){
+                SPL.Mat[i][j] = this.Mat[i][j];
+            }
+        }
+        SPL= SPL.InverseIdentity();
+        for(int i=0; i<SPL.row;i++){
+            for(int j=0; j<rs.col; j++){
+                for(int k=0; k<SPL.col; k++){
+                    result.Mat[i][j] += SPL.Mat[i][k]* rs.Mat[k][j];
+                }
+            }
+        }
+        for(int i=0; i<result.row;i++){
+            System.out.printf("x%d = %.2f\n",i+1,result.Mat[i][0]);
+        }
+
+    }
+    public void solveCramer() {
+        int i, j;
+        double[] detList = new double[this.col];
+        double solutionValue;
+
+        Matrix MCopy = this.getCopy();
+        MCopy.col = MCopy.col-1;
+        detList[0] = MCopy.detReduction();
+
+        for (j=0; j<MCopy.col; j++) {
+            MCopy = this.getCopy();
+            MCopy.col = MCopy.col-1;
+            for (i=0; i<MCopy.row; i++) {
+                MCopy.Mat[i][j] = this.Mat[i][this.col-1];
+            }
+            detList[j+1] = MCopy.detReduction();
+            solutionValue = detList[j+1]/detList[0];
+            System.out.printf("x%d = %.2f\n", j+1, solutionValue);
         }
     }
 
@@ -317,28 +370,6 @@ public class Matrix {
         return detM;
     }
 
-
-    public void solveCramer() {
-        int i, j;
-        double[] detList = new double[this.col];
-        double solutionValue;
-
-        Matrix MCopy = this.getCopy();
-        MCopy.col = MCopy.col-1;
-        detList[0] = MCopy.detReduction();
-
-        for (j=0; j<MCopy.col; j++) {
-            MCopy = this.getCopy();
-            MCopy.col = MCopy.col-1;
-            for (i=0; i<MCopy.row; i++) {
-                MCopy.Mat[i][j] = this.Mat[i][this.col-1];
-            }
-            detList[j+1] = MCopy.detReduction();
-            solutionValue = detList[j+1]/detList[0];
-            System.out.printf("x%d = %.2f\n", j+1, solutionValue);
-        }
-    }
-
     public void getCofactor(double [][]mat, double [][]temp, int rows, int cols, int dims){
         int i=0,j=0,nrow,ncol;
         for(nrow = 0; nrow<dims;nrow++){
@@ -372,7 +403,7 @@ public class Matrix {
         }
         return det;
     }
-
+    /************************* Inverse *************************/
     public Matrix MatrixInvalid(){
         Matrix m = new Matrix();
         m.row = this.row;
@@ -519,7 +550,7 @@ public class Matrix {
         }
 
     }
-
+    /******************** Interpolasi Polinom ********************/
     public double Pangkat(double x, int y){
         if (y==1){
             return x;

@@ -31,15 +31,38 @@ public class Main {
 
             }
             else if (submenu1 == 3) {
-
+                printInputChoice();
+                getInputChoice();
+                if(inputChoice == 1){
+                    System.out.print("Masukkan jumlah persamaan SPL: ");
+                    m.row = input.nextInt();
+                    m.col = m.row+1;
+                    System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
+                    m.readMatrixKeyboard();
+                    m.solveInverse();
+                }
+                else{
+                    System.out.print("Masukkan path file: ");
+                    getPathname();
+                    m.readMatrixFile(pathname);
+                }
             }
             else if (submenu1 == 4) {
-                System.out.print("Masukkan jumlah persamaan SPL: ");
-                m.row = input.nextInt();
-                m.col = m.row + 1;
-                System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
-                m.readMatrixKeyboard();
-                m.solveCramer();
+                printInputChoice();
+                getInputChoice();
+                if(inputChoice == 1){
+                    System.out.print("Masukkan jumlah persamaan SPL: ");
+                    m.row = input.nextInt();
+                    m.col = m.row + 1;
+                    System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
+                    m.readMatrixKeyboard();
+                    m.solveCramer();
+                }
+                else{
+                    System.out.print("Masukkan path file: ");
+                    getPathname();
+                    m.readMatrixFile(pathname);
+                }
             }
             else {
                 main(null);
