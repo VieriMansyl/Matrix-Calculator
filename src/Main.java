@@ -17,166 +17,68 @@ public class Main {
             printSubmenu1();
             getSubmenu1();
 
-            if (submenu1 == 1) {
-                m = readMatrixMN();
-                m.solveGauss();
-            }
-            else if (submenu1 == 2) {
-                m = readMatrixMN();
-                //m.solveGaussJordan();
-            }
-            else if (submenu1 == 3) {
-                m = readMatrixN();
-                m.solveInverse();
-            }
-            else if (submenu1 == 4) {
-                m = readMatrixMN();
-                m.solveCramer();
-            }
-            else {
-                main(null);
-            }
-
+            m = readMatrixMN();
+            if (submenu1 == 1) m.solveGauss();
+            else if (submenu1 == 2); //m.solveGaussJordan();
+            else if (submenu1 == 3) m.solveInverse();
+            else if (submenu1 == 4) m.solveCramer();
+            else main(null);
         }
 
         else if (menu == 2) {
             printSubmenu2();
             getSubmenu2();
 
-            if (submenu2 == 1) {
-                printInputChoice();
-                getInputChoice();
-
-                if (inputChoice == 1) {
-                    System.out.print("Masukkan n: ");
-                    m.row = input.nextInt();
-                    m.col = m.row;
-                    System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
-                    m.readMatrixKeyboard();
-                }
-
-                else {
-                    getPathname();
-                    m.readMatrixFile(pathname);
-                }
-
-                double det = m.detReduction();
-                System.out.printf("Nilai determinan matriks tersebut adalah %.4f", det);
-                System.out.println();
-
-            }
-            else if (submenu2 == 2) {
-                printInputChoice();
-                getInputChoice();
-                if(inputChoice == 1){
-                    System.out.print("Masukkan n: ");
-                    m.row = input.nextInt();
-                    m.col = m.row;
-                    System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
-                    m.readMatrixKeyboard();
-                    double det = m.detCofactor(m.Mat,m.row);
-                    System.out.printf("Nilai determinan matriks tersebut adalah %.4f\n",det);
-                }
-                else {
-                    System.out.print("Masukkan path file: ");
-                    getPathname();
-                    m.readMatrixFile(pathname);
-                }
-            }
-            else {
-                main(null);
-            }
+            m = readMatrixN();
+            double det = 0;
+            if (submenu2 == 1) det = m.detReduction();
+            else if (submenu2 == 2) det = m.detCofactor(m.Mat,m.row);
+            else main(null);
+            System.out.printf("Nilai determinan matriks tersebut adalah %.4f\n",det);
         }
 
         else if (menu == 3) {
             printSubmenu3();
             getSubmenu3();
 
+            m = readMatrixN();
+            Matrix Mnew = new Matrix();
+
             if (submenu3 == 1) {
-                printInputChoice();
-                getInputChoice();
-                if(inputChoice == 1){
-                    System.out.print("Masukkan n: ");
-                    m.row = input.nextInt();
-                    m.col = m.row;
-                    System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
-                    m.readMatrixKeyboard();
-                    Matrix Mnew = new Matrix();
-                    Mnew.row = m.row;
-                    Mnew.col = m.col;
-                    Mnew = m.InverseAdjoin();
-                    boolean isInvalid = Mnew.isMatrixInvalid();
-                    if (isInvalid){
-                        System.out.printf("Tidak ada balikan. Determinan matrix = 0");
-                    }
-                    else{
-                        Mnew.displayMatrix();
-                    }
-                } else {
-                    System.out.print("Masukkan path file: ");
-                    getPathname();
-                    m.readMatrixFile(pathname);
-                }
+                Mnew.row = m.row;
+                Mnew.col = m.col;
+                Mnew = m.InverseAdjoin();
             }
-
             else if (submenu3 == 2) {
-                printInputChoice();
-                getInputChoice();
-                if(inputChoice == 1) {
-                    System.out.print("Masukkan n: ");
-                    m.row = input.nextInt();
-                    m.col = m.row;
-                    System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
-                    m.readMatrixKeyboard();
-                    Matrix Mnew = new Matrix();
-                    Mnew.row = m.row;
-                    Mnew.col = m.col * 2;
-                    Mnew = m.InverseIdentity();
-                    boolean isInvalid = Mnew.isMatrixInvalid();
-                    if (isInvalid) {
-                        System.out.print("Tidak ada balikan. Determinan matrix = 0");
-                    } else {
-                        Mnew.displayMatrix();
-                    }
-                }
-                else {
-                    System.out.print("Masukkan path file: ");
-                    getPathname();
-                    m.readMatrixFile(pathname);
-                }
-
+                Mnew.row = m.row;
+                Mnew.col = m.col * 2;
+                Mnew = m.InverseIdentity();
             }
-
             else {
                 main(args);
             }
+
+            boolean isInvalid = Mnew.isMatrixInvalid();
+            if (isInvalid) {
+                System.out.print("Tidak ada balikan. Determinan matrix = 0");
+            } else {
+                Mnew.displayMatrix();
+            }
+
         }
 
         else if (menu == 4) {
-            printInputChoice();
-            getInputChoice();
-            if(inputChoice == 1){
-                System.out.print("Masukkan n: ");
-                m.row = input.nextInt();
-                m.col = 2;
-                System.out.printf("Masukkan point:\n");
-                m.readMatrixKeyboard();
-                double x;
-                System.out.printf("Masukkan x:\n");
-                x = input.nextDouble();
-                double result;
-                result = m.InterpolasiPolinom(x);
-                System.out.printf("P(%f):%f\n",x,result);
-            }
-            else {
-                System.out.print("Masukkan path file: ");
-                getPathname();
-                m.readMatrixFile(pathname);
-            }
+            m = readMatrixInterpolasi();
+            double x;
+            System.out.print("Masukkan x:\n");
+            x = input.nextDouble();
+            double result;
+            result = m.InterpolasiPolinom(x);
+            System.out.printf("P(%f):%f\n", x, result);
         }
 
         else if (menu == 5) {
-
+            m = readMatrixMN();
         }
 
         else {
