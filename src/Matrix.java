@@ -118,10 +118,6 @@ public class Matrix {
     }
 
 
-    //Metode eliminasi Gauss                - done
-    //Metode eliminasi Gauss Jordan         - progress
-    //determinan : reduksi baris            - done
-    //Regresi linear berganda               -
 
     //Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak
     public int isColZero(int row , int col){
