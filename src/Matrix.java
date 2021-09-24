@@ -126,17 +126,6 @@ public class Matrix {
         return foundvalue;
     }
 
-    //Mencari kolom yang memiliki 1 utama pada baris ke-row
-    public int get1Utama(int row){
-        int col = 0;
-        boolean found = false;
-        while (col < (this.col-1) && !found){
-            if(this.Mat[row][col]==1)   {found = true;}
-            else                        {col++;}
-        }
-        return col;
-    }
-
     //Menukar baris dengan elemen terdefinisi pada kolom ke-col
     public boolean changeplace(int row , int col){
         int change_row;
@@ -175,7 +164,55 @@ public class Matrix {
         }
     }
 
+    public int getRowMain(int i) {
+        boolean nonZero;
+        boolean found1Utama = false;
+        int row = i+1;
+        int col;
+        while (row > 0 && !found1Utama){
+            row--; col = 0;
+            nonZero = false;
+            while (col < i-1 && !nonZero){
+                if(this.Mat[row][col] != 0)     {nonZero = true;}
+                else                            {col++;}
+            }
+            if(!nonZero && this.Mat[row][col]==1) {
+                found1Utama = true;
+            }
+        }
+        if (row==0 && !found1Utama)     {row = 999;}
 
+        return row;
+    }
+
+    public Matrix getValue(){
+        final int IDX_UNDEF = 999;
+        int paramCol = 0;
+        int rowMain;
+        Matrix solusi = new Matrix();
+
+        for (int i =this.row-1; i>=0; i--){                 //dari X ke-n s.d. X1
+            if (this.getRowMain(i) == IDX_UNDEF) {
+                paramCol++;
+                solusi.Mat[i][paramCol] = 1;
+            }
+            else {
+                rowMain = this.getRowMain(i);
+                for (int j=0; j<=paramCol; j++){            //C, p, q, dst{
+
+                    if (j==0)   {solusi.Mat[i][j] = this.Mat[rowMain][this.col-1];}
+
+                    for (int k=i+1; k<this.row; k++){      //kurangi C1, C2, ...
+                        solusi.Mat[i][j] -= this.Mat[rowMain][k] * solusi.Mat[k][j];
+                    }
+                }
+            }
+        }
+        solusi.row = this.row;
+        solusi.col = paramCol+1;
+
+        return solusi;
+    }
 
     /************************ Gauss ************************/
 
@@ -183,6 +220,7 @@ public class Matrix {
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
         int row;                    //membaca tiap baris matriks m
         int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
+
 
         Matrix m = this.getCopy();
 
@@ -192,10 +230,11 @@ public class Matrix {
 
             while (row < this.row) {
                 if (m.Mat[row][colEff] == 0 && row == pass) {
-                    //mengecek apabila m[row][col] = 0
+                    //memutar baris apabila m[row][col] = 0
+                    //isChange menjadi penentu terjadi pertukaran baris atau tidak
                     isChange = m.changeplace(row, colEff);
                 }
-                if (row == pass && m.Mat[row][colEff] != 1 && this.Mat[row][colEff] != 0) {
+                if (row == pass && m.Mat[row][colEff] != 1 && isChange) {
                     //m[row][col] bukan 1 utama dan bukan 0 serta bukan tepat di bawah sebuah 1 utama
                     m.bagi1utama(row, colEff);
                 }
@@ -203,9 +242,9 @@ public class Matrix {
                     //prekondisi : selalu berada dibawah 1 utama
                     //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
                     m.makeZero(row, colEff,pass);
-                } else if (!isChange) {
-                    row = this.row;
-                }
+
+                } else if (!isChange) {row = this.row;}
+
                 row++;
             }
             colEff++;
@@ -215,24 +254,20 @@ public class Matrix {
 
     /************************ SPL with Gauss ************************/
     public void solveGauss(){
-        int total_1utama = 0;
-        int row;
-        int col = 0;
-        boolean found;
 
+        boolean noSolution = (this.isRowZero(this.row-1 , this.col-1) && this.Mat[this.row-1][this.col-1] != 0);
+
+        Matrix solusi = new Matrix();
+        //membentuk matriks mengikuti metode Gauss
+        this.gauss();
         //menghitung banyak 1 utama
-        for (row = 0; row < this.row ; row++){
-                if(this.isRowZero(row , this.col-1) && this.Mat[row][this.col-1] != 0){              //tidak ada solusi
-                    System.out.println("SPL ini tidak ada solusi.");
-                } else if(this.isRowZero(row , this.col-1) && this.Mat[row][this.col-1] == 0){       //banyak solusi
-                    //banyak solusi
-                }else{                                                                  //solusi unik
-                    //solusi unik
-                }
+
+        if(noSolution){     //tidak ada solusi
+            System.out.println("SPL ini tidak ada solusi.");
+        } else{     //banyak solusi ataupun solusi unik
+            solusi = this.getValue();
+            solusi.displayMatrix();
         }
-
-
-
     }
 
     /************************* DETERMINAN *************************/
