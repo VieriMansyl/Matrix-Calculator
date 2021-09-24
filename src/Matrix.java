@@ -579,7 +579,7 @@ public class Matrix {
 
     }
     /******************** Interpolasi Polinom ********************/
-    public double InterpolasiPolinom(double x) {
+    public void interpolasiPolinom(double x) {
         Matrix L = new Matrix();
         L.row = this.row;
         L.col = 4;
@@ -600,10 +600,24 @@ public class Matrix {
         }
         L.gaussJordan();
         double result = 0;
+        System.out.printf("P(x)= ");
         for (int a = 0; a < row; a++) {
+            System.out.printf("%.4f",L.Mat[a][3]);
+            if(a==1){
+                System.out.printf("x");
+            }
+            else if (a>1){
+                System.out.printf("x^%d",a);
+            }
+            if (a<row-1){
+                if(L.Mat[a+1][3]>=0){
+                    System.out.printf("+");
+                }
+            }
             result += L.Mat[a][3] * Math.pow(x,a);
         }
-        return result;
+        System.out.printf("\n");
+        System.out.printf("P(%f) = %.4f",x,result);
     }
 
 

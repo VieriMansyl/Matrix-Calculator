@@ -72,9 +72,7 @@ public class Main {
             double x;
             System.out.print("Masukkan x:\n");
             x = input.nextDouble();
-            double result;
-            result = m.InterpolasiPolinom(x);
-            System.out.printf("P(%f):%f\n", x, result);
+            m.interpolasiPolinom(x);
         }
 
         else if (menu == 5) {
