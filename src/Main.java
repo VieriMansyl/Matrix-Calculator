@@ -19,7 +19,7 @@ public class Main {
 
             m = readMatrixMN();
             if (submenu1 == 1) m.solveGauss();
-            else if (submenu1 == 2); m.solveGaussJordan();
+            else if (submenu1 == 2) m.solveGaussJordan();
             else if (submenu1 == 3) m.solveInverse();
             else if (submenu1 == 4) m.solveCramer();
             else main(null);
