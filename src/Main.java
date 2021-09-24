@@ -79,6 +79,7 @@ public class Main {
 
         else if (menu == 5) {
             m = readMatrixMN();
+            m.regLinearBerganda();
         }
 
         else {

@@ -136,6 +136,7 @@ public class Matrix {
         }
         return row;
     }
+
     //Menentukan apakah seluruh elemen baris terakhir bernilai 0 atau tidak
     public boolean isLastRowZero(){
         boolean foundvalue = false;
@@ -190,6 +191,7 @@ public class Matrix {
         boolean found1Utama = false;
         int row = i+1;
         int col;
+
         while (row > 0 && !found1Utama){
             row--; col = 0;
             nonZero = false;
@@ -240,9 +242,6 @@ public class Matrix {
         int row;                    //membaca tiap baris matriks m
         int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
 
-
-        Matrix m = this.getCopy();
-
         for (pass=0 ; pass < this.row ; pass++){
             row = pass;
             boolean isChange = true;
@@ -282,9 +281,8 @@ public class Matrix {
         }
     }
 
-    /**************************** SPL  ****************************/
+    //penyelesaian SPL - Gauss
     public void solveGauss(){
-
         boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
 
         Matrix solusi;
@@ -298,6 +296,22 @@ public class Matrix {
             solusi = this.getValue();
             solusi.displayMatrixSolution();
         }
+    }
+
+    public void solveGaussJordan(){
+        boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
+
+        Matrix solusi;
+        //membentuk matriks mengikuti metode Gauss
+        this.gaussJordan();
+
+        if(noSolution){     //tidak ada solusi
+            System.out.println("SPL ini tidak ada solusi.");
+        } else{     //banyak solusi ataupun solusi unik
+            solusi = this.getValue();
+            solusi.displayMatrixSolution();
+        }
+
     }
 
     public void solveInverse(){
@@ -437,8 +451,8 @@ public class Matrix {
     public boolean isMatrixInvalid(){
         boolean flag = true;
         int i=0,j=0;
-        while (i<this.row && flag == true){
-            while(j<this.col && flag == true){
+        while (i<this.row && flag){
+            while(j<this.col && flag){
                 if (this.Mat[i][j] != -999){
                     flag = false;
                 }
@@ -596,6 +610,38 @@ public class Matrix {
         return result;
     }
 
+
+    //regresi linear berganda
+
+    //menghitung koefisien tiap elemen
+    public double elementValueReg(int k , int col){
+        int row;
+        double value = 0;
+        for (row = 0 ; row < this.row ; row++){
+            if(k != 0){
+                value += this.Mat[row][k] * this.Mat[row][col];
+            }else{
+                value += this.Mat[row][col];
+            }
+        }
+        return value;
+    }
+
+    //solve regresi linear berganda
+    public void regLinearBerganda(){
+        int pass=0;
+        int row , col;
+        Matrix m = new Matrix();
+        m.Mat[0][0] = this.row;
+
+        for (row = 1; row < this.row -1; row++) {
+            for (col = 1; col < this.col -1; col++) {
+                m.Mat[row][col] = this.elementValueReg(pass, col);
+            }
+            pass++;
+        }
+        m.gauss();
+    }
 
     // Parameter conversion (support up to 26 parameters)
     private static String col2p (int i) {
