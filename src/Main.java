@@ -8,66 +8,30 @@ public class Main {
 
     public static void main (String[] args) {
         input = new Scanner(System.in);
-        Matrix m = new Matrix();
+        Matrix m;
 
         printMenu();
         getMenu();
-
-        if (menu == 7) {
-            System.out.print("filename: ");
-            String filename = input.next();
-            m.readMatrixFile(filename);
-            m.displayMatrix();
-        }
 
         if (menu == 1) {
             printSubmenu1();
             getSubmenu1();
 
             if (submenu1 == 1) {
-                System.out.print("Masukkan jumlah persamaan SPL: ");
-                m.row = input.nextInt();
-                m.col = m.row + 1;
-                System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
-                m.readMatrixKeyboard();
+                m = readMatrixMN();
                 m.solveGauss();
             }
             else if (submenu1 == 2) {
-
+                m = readMatrixMN();
+                //m.solveGaussJordan();
             }
             else if (submenu1 == 3) {
-                printInputChoice();
-                getInputChoice();
-                if(inputChoice == 1){
-                    System.out.print("Masukkan jumlah persamaan SPL: ");
-                    m.row = input.nextInt();
-                    m.col = m.row+1;
-                    System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
-                    m.readMatrixKeyboard();
-                    m.solveInverse();
-                }
-                else{
-                    System.out.print("Masukkan path file: ");
-                    getPathname();
-                    m.readMatrixFile(pathname);
-                }
+                m = readMatrixN();
+                m.solveInverse();
             }
             else if (submenu1 == 4) {
-                printInputChoice();
-                getInputChoice();
-                if(inputChoice == 1){
-                    System.out.print("Masukkan jumlah persamaan SPL: ");
-                    m.row = input.nextInt();
-                    m.col = m.row + 1;
-                    System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
-                    m.readMatrixKeyboard();
-                    m.solveCramer();
-                }
-                else{
-                    System.out.print("Masukkan path file: ");
-                    getPathname();
-                    m.readMatrixFile(pathname);
-                }
+                m = readMatrixMN();
+                m.solveCramer();
             }
             else {
                 main(null);
@@ -170,7 +134,7 @@ public class Main {
                     Mnew = m.InverseIdentity();
                     boolean isInvalid = Mnew.isMatrixInvalid();
                     if (isInvalid) {
-                        System.out.printf("Tidak ada balikan. Determinan matrix = 0");
+                        System.out.print("Tidak ada balikan. Determinan matrix = 0");
                     } else {
                         Mnew.displayMatrix();
                     }
@@ -275,7 +239,7 @@ public class Main {
     private static void getMenu() {
         System.out.print("Menu yang ingin dipilih: ");
         menu = input.nextInt();
-        while (menu > 7 || menu < 1)
+        while (menu > 6 || menu < 1)
         {
             System.out.print("Ulangi menu yang ingin dipilih: ");
             menu = input.nextInt();
@@ -338,6 +302,64 @@ public class Main {
             inputChoice = input.nextInt();
         }
         System.out.println();
+    }
+
+    private static Matrix readMatrixN() {
+        printInputChoice();
+        getInputChoice();
+        Matrix m = new Matrix();
+        if (inputChoice == 1) {
+            System.out.print("Masukkan baris N: ");
+            m.row = input.nextInt();
+            m.col = m.row;
+            System.out.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
+            m.readMatrixKeyboard();
+        }
+        else {
+            System.out.print("Masukkan path file: ");
+            getPathname();
+            m.readMatrixFile(pathname);
+        }
+        return m;
+    }
+
+    private static Matrix readMatrixMN() {
+        printInputChoice();
+        getInputChoice();
+        Matrix m = new Matrix();
+        if (inputChoice == 1) {
+            System.out.print("Masukkan baris M: ");
+            m.row = input.nextInt();
+            System.out.print("Masukkan kolom N: ");
+            m.col = input.nextInt();
+            System.out.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
+            m.readMatrixKeyboard();
+        }
+        else {
+            System.out.print("Masukkan path file: ");
+            getPathname();
+            m.readMatrixFile(pathname);
+        }
+        return m;
+    }
+
+    private static Matrix readMatrixInterpolasi() {
+        printInputChoice();
+        getInputChoice();
+        Matrix m = new Matrix();
+        if (inputChoice == 1) {
+            System.out.print("Masukkan jumlah titik: ");
+            m.row = input.nextInt();
+            m.col = 2;
+            System.out.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
+            m.readMatrixKeyboard();
+        }
+        else {
+            System.out.print("Masukkan path file: ");
+            getPathname();
+            m.readMatrixFile(pathname);
+        }
+        return m;
     }
 
     private static void askRepeat() {

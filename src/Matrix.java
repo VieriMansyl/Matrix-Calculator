@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.lang.Math;
 
 public class Matrix {
 
@@ -568,19 +569,6 @@ public class Matrix {
 
     }
     /******************** Interpolasi Polinom ********************/
-    public double Pangkat(double x, int y){
-        if (y==1){
-            return x;
-        }
-        else if(y==2){
-            return(x*x);
-        }
-        else if(y==0){
-            return 1;
-        }
-        return (x*(Pangkat(x,y-1)));
-    }
-
     public double InterpolasiPolinom(double x) {
         Matrix L = new Matrix();
         L.row = this.row;
@@ -603,7 +591,7 @@ public class Matrix {
         L.gaussJordan();
         double result = 0;
         for (int a = 0; a < row; a++) {
-            result += L.Mat[a][3] * Pangkat(x,a);
+            result += L.Mat[a][3] * Math.pow(x,a);
         }
         return result;
     }
