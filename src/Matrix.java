@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Matrix {
@@ -47,7 +46,6 @@ public class Matrix {
                 this.Mat[i][j] = input.nextDouble();
             }
         }
-        //input.close();
     }
 
     // Prosedur input dari File
@@ -83,7 +81,31 @@ public class Matrix {
         for (i=0; i<this.row; i++) {
             for (j=0; j<this.col; j++) {
                 System.out.print(this.Mat[i][j]);
-                System.out.print(" ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void displayMatrixSolution() {
+        int i,j;
+        boolean first;
+        for (i=0; i<this.row; i++) {
+            System.out.printf("x%d =", i+1);
+            first = true;
+            for (j=0; j<this.col; j++) {
+                if (this.Mat[i][j] != 0d) {
+                    if (first) {
+                        System.out.printf(" %.2f", this.Mat[i][j]);
+                        System.out.print(col2p(j));
+                        first = false;
+                    }
+                    else {
+                        if (this.Mat[i][j] < 0) System.out.printf(" - %.2f", -this.Mat[i][j]);
+                        else System.out.printf(" + %.2f", this.Mat[i][j]);
+                        System.out.print(col2p(j));
+                    }
+                }
+
             }
             System.out.println();
         }
@@ -170,7 +192,7 @@ public class Matrix {
         while (row > 0 && !found1Utama){
             row--; col = 0;
             nonZero = false;
-            while (col < i-1 && !nonZero){
+            while (col <= i-1 && !nonZero){
                 if(this.Mat[row][col] != 0)     {nonZero = true;}
                 else                            {col++;}
             }
@@ -264,16 +286,16 @@ public class Matrix {
 
         boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
 
-        Matrix solusi = new Matrix();
+        Matrix solusi;
+
         //membentuk matriks mengikuti metode Gauss
         this.gauss();
-        this.displayMatrix();
 
         if(noSolution){     //tidak ada solusi
             System.out.println("SPL ini tidak ada solusi.");
         } else{     //banyak solusi ataupun solusi unik
             solusi = this.getValue();
-            solusi.displayMatrix();
+            solusi.displayMatrixSolution();
         }
     }
 
@@ -584,5 +606,12 @@ public class Matrix {
             result += L.Mat[a][3] * Pangkat(x,a);
         }
         return result;
+    }
+
+
+    // Parameter conversion (support up to 26 parameters)
+    private static String col2p (int i) {
+        if (i==0) return "";
+        else return Character.toString((char) i+96);
     }
 }
