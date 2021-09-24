@@ -252,6 +252,18 @@ public class Matrix {
         return m.Mat;
     }
 
+    public void gaussJordan(){
+        this.Mat = this.gauss();
+        for (int p = 0; p < this.row - 1; p++) {
+            for (int r = p + 1; r < this.row; r++) {
+                double ratio = this.Mat[p][r];
+                for (int s = 0; s < this.col; s++) {
+                    this.Mat[p][s] -= ratio * this.Mat[r][s];
+                }
+            }
+        }
+    }
+
     /************************ SPL with Gauss ************************/
     public void solveGauss(){
 
@@ -361,26 +373,7 @@ public class Matrix {
         return det;
     }
 
-    public Matrix CreateIdentity(){
-        Matrix m = new Matrix();
-        m.row = this.row;
-        m.col = this.col;
-
-        for (int i=0; i<m.row; i++) {
-            for (int j=0; j<m.col; j++) {
-                if(i!=j){
-                    m.Mat[i][j] = 0;
-                }
-                else {
-                    m.Mat[i][j] = 1;
-                }
-            }
-        }
-
-        return m;
-    }
-
-    public Matrix InversAdjoin(){
+    public Matrix InverseAdjoin(){
         //Prekondisi determinan !=0
         Matrix m = new Matrix();
         m.row = this.row;
@@ -411,7 +404,59 @@ public class Matrix {
                 m.Mat[p][q] /=  determinant;
             }
         }
-        return m;
+        Matrix MT = new Matrix();
+        MT.row = m.row;
+        MT.col = m.col;
+        for(int a=0; a<m.row;a++){
+            for(int b=0; b<m.col;b++){
+                MT.Mat[a][b] = m.Mat[b][a];
+            }
+        }
+        return MT;
+    }
+
+    public Matrix InverseIdentity (){
+        Matrix aug = new Matrix();
+        aug.row = this.row;
+        aug.col = this.col*2;
+
+        //create Identity
+        Matrix I = new Matrix();
+        I.row = this.row;
+        I.col = this.col;
+        for (int i=0; i<I.row; i++) {
+            for (int j=0; j<I.col; j++) {
+                if(i!=j){
+                    I.Mat[i][j] = 0;
+                }
+                else {
+                    I.Mat[i][j] = 1;
+                }
+            }
+        }
+
+        double temp;
+        for(int i=0; i<this.row; i++){
+            for(int j=0; j<this.col*2; j++){
+                if(j<this.col){
+                    aug.Mat[i][j] = this.Mat[i][j];
+                }
+                else{
+                    aug.Mat[i][j] = I.Mat[i][j-this.col];
+                }
+            }
+        }
+        aug.gaussJordan();
+
+        Matrix result= new Matrix();
+        result.row = I.row;
+        result.col = I.col;
+        for (int i=0; i<result.row;i++){
+            for(int j=0; j<result.col;j++){
+                result.Mat[i][j] = aug.Mat[i][I.col+j];
+            }
+        }
+        return result;
     }
 
     public double Pangkat(double x, int y){
@@ -446,16 +491,7 @@ public class Matrix {
         for (int l = 0; l < L.row; l++) {
             L.Mat[l][3] = this.Mat[l][1];
         }
-        L.Mat = L.gauss();
-        for (int p = 0; p < L.row - 1; p++) {
-            for (int r = p + 1; r < L.row; r++) {
-                double ratio = L.Mat[p][r];
-                L.Mat[p][3] -= ratio * L.Mat[r][3];
-                for (int s = 0; s < L.col - 1; s++) {
-                    L.Mat[p][s] -= ratio * L.Mat[r][s];
-                }
-            }
-        }
+        L.gaussJordan();
         double result = 0;
         for (int a = 0; a < row; a++) {
             result += L.Mat[a][3] * Pangkat(x,a);

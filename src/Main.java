@@ -98,13 +98,22 @@ public class Main {
                 System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
                 m.readMatrixKeyboard();
                 Matrix Mnew = new Matrix();
-                Mnew.row = m.row-1;
-                Mnew.col = m.col-1;
-                Mnew = m.InversAdjoin();
+                Mnew.row = m.row;
+                Mnew.col = m.col;
+                Mnew = m.InverseAdjoin();
                 Mnew.displayMatrix();
             }
             else if (submenu3 == 2) {
-
+                System.out.print("Masukkan n: ");
+                m.row = input.nextInt();
+                m.col = m.row;
+                System.out.printf("Masukkan matriks persegi %dx%d:\n", m.row, m.col);
+                m.readMatrixKeyboard();
+                Matrix Mnew = new Matrix();
+                Mnew.row = m.row;
+                Mnew.col = m.col*2;
+                Mnew = m.InverseIdentity();
+                Mnew.displayMatrix();
             }
 
             else {
