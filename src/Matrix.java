@@ -95,12 +95,10 @@ public class Matrix {
     }
 
 
-    /**********************************VIERI**********************************/
-    //Metode eliminasi Gauss (A)            - progress
-    //Metode eliminasi Gauss Jordan (A)     - progress
-    //determinan :
-    //reduksi baris (A)                     - done
-
+    //Metode eliminasi Gauss                - done
+    //Metode eliminasi Gauss Jordan         - progress
+    //determinan : reduksi baris            - done
+    //Regresi linear berganda               -
 
     //Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak
     public int isColZero(int row , int col){
@@ -115,15 +113,15 @@ public class Matrix {
         }
         return row;
     }
-    //Menentukan apakah seluruh elemen baris ke-row bernilai 0 atau tidak
-    public boolean isRowZero(int row , int colM){
+    //Menentukan apakah seluruh elemen baris terakhir bernilai 0 atau tidak
+    public boolean isLastRowZero(){
         boolean foundvalue = false;
         int col = 0;
-        while(col < colM){
-            if(this.Mat[row][col]!=0)  {foundvalue = true;}
-            else                {col++;}
+        while(col < (this.col -1) && !foundvalue){
+            if(this.Mat[this.row -1][col]!=0)   {foundvalue = true;}
+            else                                {col++;}
         }
-        return foundvalue;
+        return !foundvalue;
     }
 
     //Menukar baris dengan elemen terdefinisi pada kolom ke-col
@@ -176,9 +174,7 @@ public class Matrix {
                 if(this.Mat[row][col] != 0)     {nonZero = true;}
                 else                            {col++;}
             }
-            if(!nonZero && this.Mat[row][col]==1) {
-                found1Utama = true;
-            }
+            if(!nonZero && this.Mat[row][col]==1) {found1Utama = true;}     //tidak ada baris yang valid
         }
         if (row==0 && !found1Utama)     {row = 999;}
 
@@ -191,7 +187,7 @@ public class Matrix {
         int rowMain;
         Matrix solusi = new Matrix();
 
-        for (int i =this.row-1; i>=0; i--){                 //dari X ke-n s.d. X1
+        for (int i=(this.row -1); i>=0; i--){                 //dari X ke-n s.d. X1
             if (this.getRowMain(i) == IDX_UNDEF) {
                 paramCol++;
                 solusi.Mat[i][paramCol] = 1;
@@ -216,7 +212,7 @@ public class Matrix {
 
     /************************ Gauss ************************/
 
-    public double[][] gauss(){
+    public void gauss(){
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
         int row;                    //membaca tiap baris matriks m
         int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
@@ -229,19 +225,19 @@ public class Matrix {
             boolean isChange = true;
 
             while (row < this.row) {
-                if (m.Mat[row][colEff] == 0 && row == pass) {
+                if (this.Mat[row][colEff] == 0 && row == pass) {
                     //memutar baris apabila m[row][col] = 0
                     //isChange menjadi penentu terjadi pertukaran baris atau tidak
-                    isChange = m.changeplace(row, colEff);
+                    isChange = this.changeplace(row, colEff);
                 }
-                if (row == pass && m.Mat[row][colEff] != 1 && isChange) {
+                if (row == pass && this.Mat[row][colEff] != 1 && isChange) {
                     //m[row][col] bukan 1 utama dan bukan 0 serta bukan tepat di bawah sebuah 1 utama
-                    m.bagi1utama(row, colEff);
+                    this.bagi1utama(row, colEff);
                 }
                 if (row > pass && isChange) {
                     //prekondisi : selalu berada dibawah 1 utama
                     //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
-                    m.makeZero(row, colEff,pass);
+                    this.makeZero(row, colEff,pass);
 
                 } else if (!isChange) {row = this.row;}
 
@@ -249,11 +245,10 @@ public class Matrix {
             }
             colEff++;
         }
-        return m.Mat;
     }
 
     public void gaussJordan(){
-        this.Mat = this.gauss();
+        this.gauss();
         for (int p = 0; p < this.row - 1; p++) {
             for (int r = p + 1; r < this.row; r++) {
                 double ratio = this.Mat[p][r];
@@ -267,12 +262,12 @@ public class Matrix {
     /**************************** SPL  ****************************/
     public void solveGauss(){
 
-        boolean noSolution = (this.isRowZero(this.row-1 , this.col-1) && this.Mat[this.row-1][this.col-1] != 0);
+        boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
 
         Matrix solusi = new Matrix();
         //membentuk matriks mengikuti metode Gauss
         this.gauss();
-        //menghitung banyak 1 utama
+        this.displayMatrix();
 
         if(noSolution){     //tidak ada solusi
             System.out.println("SPL ini tidak ada solusi.");

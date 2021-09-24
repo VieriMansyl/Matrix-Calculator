@@ -25,7 +25,12 @@ public class Main {
             getSubmenu1();
 
             if (submenu1 == 1) {
-
+                System.out.print("Masukkan jumlah persamaan SPL: ");
+                m.row = input.nextInt();
+                m.col = m.row + 1;
+                System.out.printf("Masukkan matriks augmented %dx%d:\n", m.row, m.col);
+                m.readMatrixKeyboard();
+                m.solveGauss();
             }
             else if (submenu1 == 2) {
 
