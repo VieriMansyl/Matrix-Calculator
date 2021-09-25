@@ -77,59 +77,43 @@ public class Matrix {
 
     }
 
-    // Prosedur output ke layar
-    public void displayMatrix() {
+    // Prosedur output
+    public void displayMatrix(PrintWriter output) {
         for (int i=0; i<this.row; i++) {
             for (int j=0; j<this.col; j++) {
-                System.out.print(this.Mat[i][j]);
+                output.print(this.Mat[i][j]);
+                if (j != this.col-1) output.print(" ");
             }
-            System.out.println();
+            output.println();
         }
+        output.flush();
     }
 
-    public void displayMatrixSolution() {
+    public void displayMatrixSolution(PrintWriter output) {
         boolean foundNonZero;
         for (int i=0; i<this.row; i++) {
-            System.out.printf("x%d = ", i+1);
+            output.printf("x%d = ", i+1);
             foundNonZero = false;
             for (int j=0; j<this.col; j++) {
                 if (this.Mat[i][j] != 0d) {
                     if (foundNonZero) {
-                        if (this.Mat[i][j] < 0d && foundNonZero) System.out.print(" - ");
-                        else if (foundNonZero) System.out.print(" + ");
-                        if (this.Mat[i][j] != 1d) System.out.printf("%.2f", Math.abs(this.Mat[i][j]));
-                        System.out.print(col2p(j));
+                        if (this.Mat[i][j] < 0d) output.print(" - ");
+                        else output.print(" + ");
+                        if (this.Mat[i][j] != 1d) output.printf("%.2f", Math.abs(this.Mat[i][j]));
+                        output.print(col2p(j));
                     }
                     else {
-                        if (this.Mat[i][j] != 1d) System.out.printf("%.2f", this.Mat[i][j]);
-                        System.out.print(col2p(j));
+                        if (this.Mat[i][j] != 1d) output.printf("%.2f", this.Mat[i][j]);
+                        output.print(col2p(j));
                         foundNonZero = true;
                     }
                 }
             }
-            if (!foundNonZero) System.out.print("0");
-            System.out.println();
+            if (!foundNonZero) output.print("0");
+            output.println();
         }
+        output.flush();
     }
-
-    // Prosedur output ke file
-    public void saveMatrix(String pathname) {
-        try {
-            PrintWriter file = new PrintWriter(pathname);
-            for (int i=0; i<this.row; i++) {
-                for (int j=0; j<this.col; j++) {
-                    file.print(this.Mat[i][j]);
-                }
-                file.println();
-            }
-            file.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-
-
 
     //Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak
     public int isColZero(int row , int col){
@@ -295,7 +279,7 @@ public class Matrix {
     }
 
     //penyelesaian SPL - Gauss
-    public void solveGauss(){
+    public Matrix solveGauss(){
         //optimasi matriks untuk membentuk matriks Augmented dengan ukuran N x N+1
         this.optimizeMat();
         //membentuk matriks mengikuti metode Gauss
@@ -304,14 +288,14 @@ public class Matrix {
         Matrix solusi;
 
         if(noSolution){     //tidak ada solusi
-            System.out.println("SPL ini tidak ada solusi.");
+            solusi = null;
         } else{     //banyak solusi ataupun solusi unik
             solusi = this.getValue();
-            solusi.displayMatrixSolution();
         }
+        return solusi;
     }
 
-    public void solveGaussJordan(){
+    public Matrix solveGaussJordan() {
         //optimasi matriks untuk membentuk matriks Augmented dengan ukuran N x N+1
         this.optimizeMat();
         //membentuk matriks mengikuti metode Gauss
@@ -320,15 +304,14 @@ public class Matrix {
         Matrix solusi;
 
         if(noSolution){     //tidak ada solusi
-            System.out.println("SPL ini tidak ada solusi.");
+            solusi = null;
         } else{     //banyak solusi ataupun solusi unik
             solusi = this.getValue();
-            solusi.displayMatrixSolution();
         }
-
+        return solusi;
     }
 
-    public void solveInverse(){
+    public Matrix solveInverse(){
         Matrix SPL= new Matrix();
         SPL.row = this.row;
         SPL.col = SPL.row;
@@ -355,30 +338,31 @@ public class Matrix {
                 }
             }
         }
-        for(int i=0; i<result.row;i++){
-            System.out.printf("x%d = %.2f\n",i+1,result.Mat[i][0]);
-        }
-
+        return result;
     }
-    public void solveCramer() {
+
+    public Matrix solveCramer() {
         int i, j;
-        double[] detList = new double[this.col];
-        double solutionValue;
+        double det0;
 
-        Matrix MCopy = this.getCopy();
-        MCopy.col = MCopy.col-1;
-        detList[0] = MCopy.detReduction();
+        Matrix solusi = new Matrix();
+        solusi.row = this.row;
+        solusi.col = 1;
 
-        for (j=0; j<MCopy.col; j++) {
-            MCopy = this.getCopy();
-            MCopy.col = MCopy.col-1;
-            for (i=0; i<MCopy.row; i++) {
-                MCopy.Mat[i][j] = this.Mat[i][this.col-1];
+        Matrix mCopy = this.getCopy();
+        mCopy.col = mCopy.col-1;
+        det0 = mCopy.detReduction();
+
+        for (j=0; j<mCopy.col; j++) {
+            mCopy = this.getCopy();
+            mCopy.col = mCopy.col-1;
+            for (i=0; i<mCopy.row; i++) {
+                mCopy.Mat[i][j] = this.Mat[i][this.col-1];
             }
-            detList[j+1] = MCopy.detReduction();
-            solutionValue = detList[j+1]/detList[0];
-            System.out.printf("x%d = %.2f\n", j+1, solutionValue);
+            solusi.Mat[j][0] = mCopy.detReduction()/det0;
         }
+
+        return solusi;
     }
 
     /************************* DETERMINAN *************************/
@@ -545,7 +529,6 @@ public class Matrix {
             }
         }
 
-        double temp;
         for(int i=0; i<this.row; i++){
             for(int j=0; j<this.col*2; j++){
                 if(j<this.col){
@@ -597,7 +580,7 @@ public class Matrix {
 
     }
     /******************** Interpolasi Polinom ********************/
-    public void interpolasiPolinom(double x) {
+    public void interpolasiPolinom(double x, PrintWriter output) {
         Matrix L = new Matrix();
         L.row = this.row;
         L.col = 4;
@@ -618,24 +601,24 @@ public class Matrix {
         }
         L.gaussJordan();
         double result = 0;
-        System.out.printf("P(x)= ");
+        output.print("P(x)= ");
         for (int a = 0; a < row; a++) {
-            System.out.printf("%.4f",L.Mat[a][3]);
+            output.printf("%.4f",L.Mat[a][3]);
             if(a==1){
-                System.out.printf("x");
+                output.print("x");
             }
             else if (a>1){
-                System.out.printf("x^%d",a);
+                output.printf("x^%d",a);
             }
             if (a<row-1){
                 if(L.Mat[a+1][3]>=0){
-                    System.out.printf("+");
+                    output.print("+");
                 }
             }
             result += L.Mat[a][3] * Math.pow(x,a);
         }
-        System.out.printf("\n");
-        System.out.printf("P(%f) = %.4f",x,result);
+        output.println();
+        output.printf("P(%f) = %.4f",x,result);
     }
 
 
@@ -668,12 +651,12 @@ public class Matrix {
             }
             pass++;
         }
-        m.gauss();
+        Matrix solusi = m.solveGauss();
     }
 
     // Parameter conversion (support up to 26 parameters)
     private static String col2p (int i) {
         if (i==0) return "";
-        else return Character.toString((char) i+96);
+        else return Character.toString((char) i+96); //Start: a
     }
 }

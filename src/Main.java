@@ -1,14 +1,19 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Main {
 
     private static Scanner input;
+    private static PrintWriter outTerminal, outFile;
     private static int menu, submenu1, submenu2, submenu3, inputChoice;
     private static String pathname;
 
     public static void main (String[] args) {
         input = new Scanner(System.in);
-        Matrix m;
+        outTerminal = new PrintWriter(outTerminal);
+
+        Matrix m, solution = null;
 
         printMenu();
         getMenu();
@@ -18,11 +23,20 @@ public class Main {
             getSubmenu1();
 
             m = readMatrixMN();
-            if (submenu1 == 1) m.solveGauss();
-            else if (submenu1 == 2) m.solveGaussJordan();
-            else if (submenu1 == 3) m.solveInverse();
-            else if (submenu1 == 4) m.solveCramer();
+            if (submenu1 == 1) solution = m.solveGauss();
+            else if (submenu1 == 2) solution = m.solveGaussJordan();
+            else if (submenu1 == 3) solution = m.solveInverse();
+            else if (submenu1 == 4) solution = m.solveCramer();
             else main(null);
+
+            if (solution == null) {
+                outTerminal.println("SPL tidak memiliki solusi.");
+            }
+            else {
+                solution.displayMatrixSolution(outTerminal);
+                getOutFile();
+                solution.displayMatrixSolution(outFile);
+            }
         }
 
         else if (menu == 2) {
@@ -34,7 +48,9 @@ public class Main {
             if (submenu2 == 1) det = m.detReduction();
             else if (submenu2 == 2) det = m.detCofactor(m.Mat,m.row);
             else main(null);
-            System.out.printf("Nilai determinan matriks tersebut adalah %.4f\n",det);
+            outTerminal.printf("Nilai determinan matriks adalah %.4f\n",det);
+            getOutFile();
+            outFile.printf("Nilai determinan matriks adalah %.4f\n",det);
         }
 
         else if (menu == 3) {
@@ -60,19 +76,24 @@ public class Main {
 
             boolean isInvalid = Mnew.isMatrixInvalid();
             if (isInvalid) {
-                System.out.print("Tidak ada balikan. Determinan matrix = 0");
+                outTerminal.println("Tidak ada balikan. Determinan matriks = 0");
+                getOutFile();
+                outFile.println("Tidak ada balikan. Determinan matriks = 0");
             } else {
-                Mnew.displayMatrix();
+                Mnew.displayMatrix(outTerminal);
+                getOutFile();
+                Mnew.displayMatrix(outFile);
             }
 
         }
 
         else if (menu == 4) {
             m = readMatrixInterpolasi();
-            double x;
-            System.out.print("Masukkan x:\n");
-            x = input.nextDouble();
-            m.interpolasiPolinom(x);
+            outTerminal.print("Masukkan x:\n");
+            double x = input.nextDouble();
+            m.interpolasiPolinom(x, outTerminal);
+            getOutFile();
+            m.interpolasiPolinom(x, outFile);
         }
 
         else if (menu == 5) {
@@ -89,120 +110,141 @@ public class Main {
     }
 
     public static void printMenu() {
-        System.out.println();
-        System.out.println("---------------------------------");
-        System.out.println("              MENU               ");
-        System.out.println("---------------------------------");
-        System.out.println("1. Solusi sistem persamaan linier");
-        System.out.println("2. Determinan matriks");
-        System.out.println("3. Matriks balikan (invers)");
-        System.out.println("4. Interpolasi polinom");
-        System.out.println("5. Regresi linier berganda");
-        System.out.println("6. Keluar");
-        System.out.println("---------------------------------");
+        outTerminal.println();
+        outTerminal.println("---------------------------------");
+        outTerminal.println("              MENU               ");
+        outTerminal.println("---------------------------------");
+        outTerminal.println("1. Solusi sistem persamaan linier");
+        outTerminal.println("2. Determinan matriks");
+        outTerminal.println("3. Matriks balikan (invers)");
+        outTerminal.println("4. Interpolasi polinom");
+        outTerminal.println("5. Regresi linier berganda");
+        outTerminal.println("6. Keluar");
+        outTerminal.println("---------------------------------");
     }
 
     public static void printSubmenu1() {
-        System.out.println();
-        System.out.println("---------------------------------");
-        System.out.println("            SUBMENU 1            ");
-        System.out.println("---------------------------------");
-        System.out.println("1. Metode eliminasi Gauss");
-        System.out.println("2. Metode eliminasi Gauss-Jordan");
-        System.out.println("3. Metode matriks balikan");
-        System.out.println("4. Kaidah Cramer");
-        System.out.println("5. Kembali ke menu utama");
-        System.out.println("---------------------------------");
+        outTerminal.println();
+        outTerminal.println("---------------------------------");
+        outTerminal.println("            SUBMENU 1            ");
+        outTerminal.println("---------------------------------");
+        outTerminal.println("1. Metode eliminasi Gauss");
+        outTerminal.println("2. Metode eliminasi Gauss-Jordan");
+        outTerminal.println("3. Metode matriks balikan");
+        outTerminal.println("4. Kaidah Cramer");
+        outTerminal.println("5. Kembali ke menu utama");
+        outTerminal.println("---------------------------------");
     }
 
     public static void printSubmenu2() {
-        System.out.println();
-        System.out.println("---------------------------------");
-        System.out.println("            SUBMENU 2            ");
-        System.out.println("---------------------------------");
-        System.out.println("1. Metode reduksi baris");
-        System.out.println("2. Metode ekspansi kofaktor");
-        System.out.println("3. Kembali ke menu utama");
-        System.out.println("---------------------------------");
+        outTerminal.println();
+        outTerminal.println("---------------------------------");
+        outTerminal.println("            SUBMENU 2            ");
+        outTerminal.println("---------------------------------");
+        outTerminal.println("1. Metode reduksi baris");
+        outTerminal.println("2. Metode ekspansi kofaktor");
+        outTerminal.println("3. Kembali ke menu utama");
+        outTerminal.println("---------------------------------");
     }
 
     public static void printSubmenu3() {
-        System.out.println();
-        System.out.println("---------------------------------");
-        System.out.println("            SUBMENU 3            ");
-        System.out.println("---------------------------------");
-        System.out.println("1. Metode umum");
-        System.out.println("2. Metode eliminasi Gauss-Jordan");
-        System.out.println("3. Kembali ke menu utama");
-        System.out.println("---------------------------------");
+        outTerminal.println();
+        outTerminal.println("---------------------------------");
+        outTerminal.println("            SUBMENU 3            ");
+        outTerminal.println("---------------------------------");
+        outTerminal.println("1. Metode umum");
+        outTerminal.println("2. Metode eliminasi Gauss-Jordan");
+        outTerminal.println("3. Kembali ke menu utama");
+        outTerminal.println("---------------------------------");
     }
 
     private static void getMenu() {
-        System.out.print("Menu yang ingin dipilih: ");
+        outTerminal.print("Menu yang ingin dipilih: ");
         menu = input.nextInt();
         while (menu > 6 || menu < 1)
         {
-            System.out.print("Ulangi menu yang ingin dipilih: ");
+            outTerminal.print("Ulangi menu yang ingin dipilih: ");
             menu = input.nextInt();
         }
-        System.out.println();
+        outTerminal.println();
     }
 
     private static void getSubmenu1() {
-        System.out.print("Submenu yang ingin dipilih: ");
+        outTerminal.print("Submenu yang ingin dipilih: ");
         submenu1 = input.nextInt();
         while (submenu1 > 5 || submenu1 < 1)
         {
-            System.out.print("Ulangi submenu yang ingin dipilih: ");
+            outTerminal.print("Ulangi submenu yang ingin dipilih: ");
             submenu1 = input.nextInt();
         }
-        System.out.println();
+        outTerminal.println();
     }
 
     private static void getSubmenu2() {
-        System.out.print("Submenu yang ingin dipilih: ");
+        outTerminal.print("Submenu yang ingin dipilih: ");
         submenu2 = input.nextInt();
         while (submenu2 > 3 || submenu2 < 1)
         {
-            System.out.print("Ulangi submenu yang ingin dipilih: ");
+            outTerminal.print("Ulangi submenu yang ingin dipilih: ");
             submenu2 = input.nextInt();
         }
-        System.out.println();
+        outTerminal.println();
     }
 
     private static void getSubmenu3() {
-        System.out.print("Submenu yang ingin dipilih: ");
+        outTerminal.print("Submenu yang ingin dipilih: ");
         submenu3 = input.nextInt();
         while (submenu3>3 || submenu3<1)
         {
-            System.out.print("Ulangi submenu yang ingin dipilih: ");
+            outTerminal.print("Ulangi submenu yang ingin dipilih: ");
             submenu3 = input.nextInt();
         }
-        System.out.println();
+        outTerminal.println();
     }
 
     private static void getPathname() {
-        System.out.print("Filename: ");
+        outTerminal.print("Filename: ");
         String filename = input.next();
         pathname = "test/" + filename;
     }
 
     private static void printInputChoice() {
-        System.out.println();
-        System.out.println("Metode untuk input matriks");
-        System.out.println("1. Keyboard");
-        System.out.println("2. File ~/test/*.txt");
-        System.out.println("---------------------------------");
-        System.out.print  ("Metode yang ingin dipilih: ");
+        outTerminal.println();
+        outTerminal.println("Metode untuk input matriks");
+        outTerminal.println("1. Keyboard");
+        outTerminal.println("2. File ~/test/*.txt");
+        outTerminal.println("---------------------------------");
+        outTerminal.print  ("Metode yang ingin dipilih: ");
     }
 
     private static void getInputChoice() {
         inputChoice = input.nextInt();
         while (!(inputChoice == 1 || inputChoice == 2)) {
-            System.out.print("Ulangi metode yang ingin dipilih: ");
+            outTerminal.print("Ulangi metode yang ingin dipilih: ");
             inputChoice = input.nextInt();
         }
-        System.out.println();
+        outTerminal.println();
+    }
+
+    private static void getOutFile() {
+        outTerminal.println();
+        outTerminal.println("Apakah anda ingin menyimpan luaran ke dalam file? (Y/N)");
+        String outputChoice = input.next();
+        while (!(outputChoice.equalsIgnoreCase("Y") || outputChoice.equalsIgnoreCase("N"))) {
+            outTerminal.println("Mohon ulangi input yang valid; apakah anda ingin menyimpan luaran ke dalam file? (Y/N)");
+            outputChoice = input.next();
+        }
+
+        if (outputChoice.equalsIgnoreCase("Y")) {
+            getPathname();
+            try {
+                outFile = new PrintWriter(pathname);
+            } catch (FileNotFoundException e) {
+                outTerminal.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+        else outFile = null;
     }
 
     private static Matrix readMatrixN() {
@@ -210,14 +252,13 @@ public class Main {
         getInputChoice();
         Matrix m = new Matrix();
         if (inputChoice == 1) {
-            System.out.print("Masukkan baris N: ");
+            outTerminal.print("Masukkan baris N: ");
             m.row = input.nextInt();
             m.col = m.row;
-            System.out.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
+            outTerminal.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
             m.readMatrixKeyboard();
         }
         else {
-            System.out.print("Masukkan path file: ");
             getPathname();
             m.readMatrixFile(pathname);
         }
@@ -229,15 +270,14 @@ public class Main {
         getInputChoice();
         Matrix m = new Matrix();
         if (inputChoice == 1) {
-            System.out.print("Masukkan baris M: ");
+            outTerminal.print("Masukkan baris M: ");
             m.row = input.nextInt();
-            System.out.print("Masukkan kolom N: ");
+            outTerminal.print("Masukkan kolom N: ");
             m.col = input.nextInt();
-            System.out.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
+            outTerminal.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
             m.readMatrixKeyboard();
         }
         else {
-            System.out.print("Masukkan path file: ");
             getPathname();
             m.readMatrixFile(pathname);
         }
@@ -249,14 +289,13 @@ public class Main {
         getInputChoice();
         Matrix m = new Matrix();
         if (inputChoice == 1) {
-            System.out.print("Masukkan jumlah titik: ");
+            outTerminal.print("Masukkan jumlah titik: ");
             m.row = input.nextInt();
             m.col = 2;
-            System.out.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
+            outTerminal.printf("Masukkan matriks %dx%d:\n", m.row, m.col);
             m.readMatrixKeyboard();
         }
         else {
-            System.out.print("Masukkan path file: ");
             getPathname();
             m.readMatrixFile(pathname);
         }
@@ -264,12 +303,12 @@ public class Main {
     }
 
     private static void askRepeat() {
-        System.out.println();
-        System.out.println("Apakah ingin mengulangi program? (Y/N)");
+        outTerminal.println();
+        outTerminal.println("Apakah ingin mengulangi program? (Y/N)");
         String repeat = input.next();
 
         while (!(repeat.equalsIgnoreCase("Y") || repeat.equalsIgnoreCase("N"))) {
-            System.out.println("Mohon ulangi input yang valid; apakah anda ingin mengulangi program? (Y/N)");
+            outTerminal.println("Mohon ulangi input yang valid; apakah anda ingin mengulangi program? (Y/N)");
             repeat = input.next();
         }
 
@@ -277,7 +316,7 @@ public class Main {
             main(null);
         }
         else {
-            System.out.println("Terima kasih telah menggunakan program ini!");
+            outTerminal.println("Terima kasih telah menggunakan program ini!");
             System.exit(0);
         }
     }
