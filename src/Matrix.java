@@ -619,58 +619,58 @@ public class Matrix {
         }
         output.println();
         output.printf("P(%f) = %.4f",x,result);
+        output.flush();
     }
 
 
     //regresi linear berganda
 
     //menghitung koefisien tiap elemen
-    public double elementValueReg(int k , int col){
-        int row;
+    public double elmtReg(int row , int col){
         double value = 0;
-        for (row = 0 ; row < this.row ; row++){
-            if(k != 0){
-                value += this.Mat[row][k] * this.Mat[row][col];
-            }else{
-                value += this.Mat[row][col];
-            }
+        for (int i = 0 ; i < this.row ; i++){
+            if(row == 0 && col == 0)        {value = this.row;}
+            else if(row == 0 || col == 0)   {value += this.Mat[row][col];}
+            else                            {value += this.Mat[i][row] * this.Mat[i][col];}
         }
         return value;
     }
 
     //display SPL hasil regresi
-    public void displayRegSPL(){
-        int i , j;
-
-        for(i=0 ; i < this.row ; i++){
-            for(j=0 ; j<this.col ; j++){
-                if (j == this.row -1){
-                    System.out.println(" = " + this.Mat[i][j]);
-                }else if(j == this.row -2){
-                    System.out.print(this.Mat[i][j]  + "β" + (j+1));
-                }else{
-                    System.out.print(this.Mat[i][j]  + "β" + (j+1) + " + ");
+    public void displayRegSPL(PrintWriter output){
+        //asumsi : jumlah data selalu melebihi jumlah variabel
+        boolean foundNonZero = false;
+        output.print("y = ");
+        for (int i=0; i<this.row; i++) {
+            if (this.Mat[i][0] != 0d) {
+                if (foundNonZero) {
+                    if (this.Mat[i][0] < 0d) output.print(" - ");
+                    else output.print(" + ");
+                    if (this.Mat[i][0] != 1d) output.printf("%.2f", Math.abs(this.Mat[i][0]));
                 }
+                else {
+                    if (this.Mat[i][0] != 1d) output.printf("%.2f", this.Mat[i][0]);
+                    foundNonZero = true;
+                }
+                if (i!=0) {output.printf("x%d",i);}
             }
         }
-        System.out.println();
+        output.flush();
     }
 
     //solve regresi linear berganda
-    public void regLinearBerganda(){
-        int pass=0;
+    public Matrix regLinearBerganda(){
         int row , col;
         Matrix m = new Matrix();
-        m.Mat[0][0] = this.row;
+        m.row = this.row;
+        m.col = this.row +1;
 
-        for (row = 1; row < this.row -1; row++) {
-            for (col = 1; col < this.col -1; col++) {
-                m.Mat[row][col] = this.elementValueReg(pass, col);
+        for (row = 0; row < this.row -1; row++) {
+            for (col = 0; col < this.col -1; col++) {
+                m.Mat[row][col] = this.elmtReg(row, col);
             }
-            pass++;
         }
-        m.displayRegSPL();
-        Matrix solusi = m.solveGauss();
+        return m.solveGauss();
     }
 
     // Parameter conversion (support up to 26 parameters)
