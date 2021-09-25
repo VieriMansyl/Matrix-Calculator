@@ -1,16 +1,17 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.lang.Math;
 
 public class Matrix {
 
-    // Atribut
+    /** Atribut **/
     int row;
     int col;
     double[][] Mat = new double[100][100];
 
-    // Method
+    /** Method **/
 
     // Konstruktor
     Matrix() {
@@ -78,9 +79,8 @@ public class Matrix {
 
     // Prosedur output ke layar
     public void displayMatrix() {
-        int i,j;
-        for (i=0; i<this.row; i++) {
-            for (j=0; j<this.col; j++) {
+        for (int i=0; i<this.row; i++) {
+            for (int j=0; j<this.col; j++) {
                 System.out.print(this.Mat[i][j]);
             }
             System.out.println();
@@ -88,33 +88,45 @@ public class Matrix {
     }
 
     public void displayMatrixSolution() {
-        int i,j;
-        boolean first;
-        for (i=0; i<this.row; i++) {
-            System.out.printf("x%d =", i+1);
-            first = true;
-            for (j=0; j<this.col; j++) {
+        boolean foundNonZero;
+        for (int i=0; i<this.row; i++) {
+            System.out.printf("x%d = ", i+1);
+            foundNonZero = false;
+            for (int j=0; j<this.col; j++) {
                 if (this.Mat[i][j] != 0d) {
-                    if (first) {
-                        System.out.printf(" %.2f", this.Mat[i][j]);
+                    if (foundNonZero) {
+                        if (this.Mat[i][j] < 0d && foundNonZero) System.out.print(" - ");
+                        else if (foundNonZero) System.out.print(" + ");
+                        if (this.Mat[i][j] != 1d) System.out.printf("%.2f", Math.abs(this.Mat[i][j]));
                         System.out.print(col2p(j));
-                        first = false;
                     }
                     else {
-                        if (this.Mat[i][j] < 0) System.out.printf(" - %.2f", -this.Mat[i][j]);
-                        else System.out.printf(" + %.2f", this.Mat[i][j]);
+                        if (this.Mat[i][j] != 1d) System.out.printf("%.2f", this.Mat[i][j]);
                         System.out.print(col2p(j));
+                        foundNonZero = true;
                     }
                 }
-
             }
+            if (!foundNonZero) System.out.print("0");
             System.out.println();
         }
     }
 
     // Prosedur output ke file
-    public void saveMatrix() {
-
+    public void saveMatrix(String pathname) {
+        try {
+            PrintWriter file = new PrintWriter(pathname);
+            for (int i=0; i<this.row; i++) {
+                for (int j=0; j<this.col; j++) {
+                    file.print(this.Mat[i][j]);
+                }
+                file.println();
+            }
+            file.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
 
