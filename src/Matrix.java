@@ -638,6 +638,24 @@ public class Matrix {
         return value;
     }
 
+    //display SPL hasil regresi
+    public void displayRegSPL(){
+        int i , j;
+
+        for(i=0 ; i < this.row ; i++){
+            for(j=0 ; j<this.col ; j++){
+                if (j == this.row -1){
+                    System.out.println(" = " + this.Mat[i][j]);
+                }else if(j == this.row -2){
+                    System.out.print(this.Mat[i][j]  + "β" + (j+1));
+                }else{
+                    System.out.print(this.Mat[i][j]  + "β" + (j+1) + " + ");
+                }
+            }
+        }
+        System.out.println();
+    }
+
     //solve regresi linear berganda
     public void regLinearBerganda(){
         int pass=0;
@@ -651,6 +669,7 @@ public class Matrix {
             }
             pass++;
         }
+        m.displayRegSPL();
         Matrix solusi = m.solveGauss();
     }
 
