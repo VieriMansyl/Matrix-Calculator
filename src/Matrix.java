@@ -231,7 +231,12 @@ public class Matrix {
         return solusi;
     }
 
-    /************************ Gauss ************************/
+    //optimasi matriks
+    public void optimizeMat(){
+        if (this.row != this.col-1){
+            this.row = this.col -1;
+        }
+    }
 
     public void gauss(){
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
@@ -279,12 +284,12 @@ public class Matrix {
 
     //penyelesaian SPL - Gauss
     public void solveGauss(){
-        boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
-
-        Matrix solusi;
-
+        //optimasi matriks untuk membentuk matriks Augmented dengan ukuran N x N+1
+        this.optimizeMat();
         //membentuk matriks mengikuti metode Gauss
         this.gauss();
+        boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
+        Matrix solusi;
 
         if(noSolution){     //tidak ada solusi
             System.out.println("SPL ini tidak ada solusi.");
@@ -295,11 +300,12 @@ public class Matrix {
     }
 
     public void solveGaussJordan(){
-        boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
-
-        Matrix solusi;
+        //optimasi matriks untuk membentuk matriks Augmented dengan ukuran N x N+1
+        this.optimizeMat();
         //membentuk matriks mengikuti metode Gauss
         this.gaussJordan();
+        boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
+        Matrix solusi;
 
         if(noSolution){     //tidak ada solusi
             System.out.println("SPL ini tidak ada solusi.");
