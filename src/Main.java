@@ -106,8 +106,13 @@ public class Main {
             m = readMatrixMN();
             Matrix solusi = m.regLinearBerganda();
             solusi.displayRegSPL(outTerminal);
+            double taksiran = solusi.taksirReg();
+            outTerminal.printf("taksiran y = %f\n",taksiran);
+            outTerminal.flush();
             getOutFile();
             solusi.displayRegSPL(outFile);
+            outFile.printf("tkasiran y = %f\n",taksiran);
+            outFile.flush();
         }
 
         else {
