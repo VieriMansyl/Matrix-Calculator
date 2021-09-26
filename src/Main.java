@@ -104,7 +104,7 @@ public class Main {
         else if (menu == 5) {
             //asumsi : jumlah data selalu melebihi jumlah variabel
             m = readMatrixMN();
-            Matrix solusi = m.regLinearBerganda();
+            Matrix solusi = m.regLinierBerganda();
             solusi.displayRegSPL(outTerminal);
             double taksiran = solusi.taksirReg();
             outTerminal.printf("taksiran y = %f\n",taksiran);

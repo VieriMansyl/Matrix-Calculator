@@ -623,7 +623,7 @@ public class Matrix {
     }
 
 
-    //regresi linear berganda
+    //regresi linier berganda
 
     //display SPL hasil regresi
     public void displayRegSPL(PrintWriter output){
@@ -661,8 +661,8 @@ public class Matrix {
         return value;
     }
 
-    //solve regresi linear berganda
-    public Matrix regLinearBerganda(){
+    //solve regresi linier berganda
+    public Matrix regLinierBerganda(){
         int row , col;
         Matrix m = new Matrix();
         m.row = this.col;
@@ -676,7 +676,7 @@ public class Matrix {
         return m.solveGauss();
     }
 
-    //pentaksiran terhadap fungsi hasil dari regresi linear berganda
+    //pentaksiran terhadap fungsi hasil dari regresi linier berganda
     public double taksirReg(){
         Scanner input = new Scanner(System.in);
         double taksiran = this.Mat[0][0];
