@@ -158,7 +158,6 @@ public class Main {
         outTerminal.println("2. Metode eliminasi Gauss-Jordan");
         outTerminal.println("3. Metode matriks balikan");
         outTerminal.println("4. Kaidah Cramer");
-        outTerminal.println("5. Kembali ke menu utama");
         outTerminal.println("---------------------------------");
         outTerminal.flush();
     }
@@ -170,7 +169,6 @@ public class Main {
         outTerminal.println("---------------------------------");
         outTerminal.println("1. Metode reduksi baris");
         outTerminal.println("2. Metode ekspansi kofaktor");
-        outTerminal.println("3. Kembali ke menu utama");
         outTerminal.println("---------------------------------");
         outTerminal.flush();
     }
@@ -182,7 +180,6 @@ public class Main {
         outTerminal.println("---------------------------------");
         outTerminal.println("1. Metode umum");
         outTerminal.println("2. Metode eliminasi Gauss-Jordan");
-        outTerminal.println("3. Kembali ke menu utama");
         outTerminal.println("---------------------------------");
         outTerminal.flush();
     }

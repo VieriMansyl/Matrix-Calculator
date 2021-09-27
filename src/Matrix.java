@@ -331,14 +331,20 @@ public class Matrix {
             }
         }
         SPL= SPL.InverseIdentity();
-        for(int i=0; i<SPL.row;i++){
-            for(int j=0; j<rs.col; j++){
-                for(int k=0; k<SPL.col; k++){
-                    result.Mat[i][j] += SPL.Mat[i][k]* rs.Mat[k][j];
+        boolean validity = SPL.isMatrixInvalid();
+        if (validity){
+            return null;
+        }
+        else {
+            for (int i = 0; i < SPL.row; i++) {
+                for (int j = 0; j < rs.col; j++) {
+                    for (int k = 0; k < SPL.col; k++) {
+                        result.Mat[i][j] += SPL.Mat[i][k] * rs.Mat[k][j];
+                    }
                 }
             }
+            return result;
         }
-        return result;
     }
 
     public Matrix solveCramer() {
