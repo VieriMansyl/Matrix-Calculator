@@ -116,7 +116,7 @@ public class Matrix {
     }
 
     //Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak
-    public int isColZero(int row , int col){
+    private int isColZero(int row , int col){
         boolean isfound = false;
 
         while (row < this.row && !isfound){
@@ -130,7 +130,7 @@ public class Matrix {
     }
 
     //Menentukan apakah seluruh elemen baris terakhir bernilai 0 atau tidak
-    public boolean isLastRowZero(){
+    private boolean isLastRowZero(){
         boolean foundvalue = false;
         int col = 0;
         while(col < (this.col -1) && !foundvalue){
@@ -141,7 +141,7 @@ public class Matrix {
     }
 
     //Menukar baris dengan elemen terdefinisi pada kolom ke-col
-    public boolean changeplace(int row , int col){
+    private boolean changeplace(int row , int col){
         int change_row;
         double temp;
         boolean ischange = false;
@@ -159,7 +159,7 @@ public class Matrix {
     }
 
     //konversi elemen menjadi 1 utama disesuaikan pada baris ke-row tersebut
-    public void bagi1utama(int row , int col) {
+    private void bagi1utama(int row , int col) {
         double pembagi;
         pembagi = this.Mat[row][col];
         for (col=0 ; col < this.col ; col++){
@@ -168,7 +168,7 @@ public class Matrix {
     }
     
     //konversi kolom ke 0 disesuaikan pada baris ke-row tersebut
-    public void makeZero(int row , int col , int pass){
+    private void makeZero(int row , int col , int pass){
         int j = col;
         double divisor =  this.Mat[pass][j];
         double divident = this.Mat[row][j];
@@ -178,7 +178,7 @@ public class Matrix {
         }
     }
 
-    public int getRowMain(int i) {
+    private int getRowMain(int i) {
         boolean nonZero;
         boolean found1Utama = false;
         int row = i+1;
@@ -228,7 +228,7 @@ public class Matrix {
     }
 
     //optimasi matriks
-    public void optimizeMat(){
+    private void optimizeMat(){
         if (this.row != this.col-1){
             this.row = this.col -1;
         }
@@ -318,7 +318,7 @@ public class Matrix {
 
         Matrix rs = new Matrix();
         rs.row = this.row;
-        rs.col =1;
+        rs.col = 1;
 
         Matrix result = new Matrix();
         result.row = SPL.row;
@@ -352,6 +352,8 @@ public class Matrix {
         Matrix mCopy = this.getCopy();
         mCopy.col = mCopy.col-1;
         det0 = mCopy.detReduction();
+
+        if (det0 == 0d) return null;
 
         for (j=0; j<mCopy.col; j++) {
             mCopy = this.getCopy();
@@ -400,7 +402,7 @@ public class Matrix {
         return detM;
     }
 
-    public void getCofactor(double [][]mat, double [][]temp, int rows, int cols, int dims){
+    private void getCofactor(double [][]mat, double [][]temp, int rows, int cols, int dims){
         int i=0,j=0,nrow,ncol;
         for(nrow = 0; nrow<dims;nrow++){
             for(ncol = 0; ncol<dims;ncol++){
@@ -434,7 +436,7 @@ public class Matrix {
         return det;
     }
     /************************* Inverse *************************/
-    public Matrix MatrixInvalid(){
+    private Matrix MatrixInvalid(){
         Matrix m = new Matrix();
         m.row = this.row;
         m.col = this.col;
@@ -650,7 +652,7 @@ public class Matrix {
     }
 
     //menghitung koefisien tiap elemen
-    public double elmtReg(int row , int col){
+    private double elmtReg(int row , int col){
         double value = 0;
         for (int i = 0 ; i < this.row ; i++){
             if(row == 0 && col == -1)       {value = this.row;}

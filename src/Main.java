@@ -29,8 +29,19 @@ public class Main {
             else if (submenu1 == 4) solution = m.solveCramer();
             else main(null);
 
-            if (solution == null) {
-                System.out.println("SPL tidak memiliki solusi.");
+            if (solution == null && (submenu1 == 3 || submenu1 == 4)) {
+                outTerminal.println("SPL tidak dapat diselesaikan dengan metode ini.");
+                outTerminal.flush();
+                getOutFile();
+                outFile.println("SPL tidak dapat diselesaikan dengan metode ini.");
+                outFile.flush();
+            }
+            else if (solution == null) {
+                outTerminal.println("SPL tidak memiliki solusi.");
+                outTerminal.flush();
+                getOutFile();
+                outFile.println("SPL tidak memiliki solusi.");
+                outFile.flush();
             }
             else {
                 solution.displayMatrixSolution(outTerminal);
