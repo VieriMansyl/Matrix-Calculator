@@ -27,7 +27,6 @@ public class Main {
             else if (submenu1 == 2) solution = m.solveGaussJordan();
             else if (submenu1 == 3) solution = m.solveInverse();
             else if (submenu1 == 4) solution = m.solveCramer();
-            else main(null);
 
             if (solution == null && (submenu1 == 3 || submenu1 == 4)) {
                 outTerminal.println("SPL tidak dapat diselesaikan dengan metode ini.");
@@ -58,7 +57,6 @@ public class Main {
             double det = 0;
             if (submenu2 == 1) det = m.detReduction();
             else if (submenu2 == 2) det = m.detCofactor(m.Mat,m.row);
-            else main(null);
             outTerminal.printf("Nilai determinan matriks adalah %.4f\n",det);
             outTerminal.flush();
             getOutFile();
@@ -82,9 +80,6 @@ public class Main {
                 Mnew.row = m.row;
                 Mnew.col = m.col * 2;
                 Mnew = m.InverseIdentity();
-            }
-            else {
-                main(args);
             }
 
             boolean isInvalid = Mnew.isMatrixInvalid();
@@ -198,7 +193,7 @@ public class Main {
     private static void getSubmenu1() {
         System.out.print("Submenu yang ingin dipilih: ");
         submenu1 = input.nextInt();
-        while (submenu1 > 5 || submenu1 < 1)
+        while (submenu1 > 4 || submenu1 < 1)
         {
             System.out.print("Ulangi submenu yang ingin dipilih: ");
             submenu1 = input.nextInt();
@@ -209,7 +204,7 @@ public class Main {
     private static void getSubmenu2() {
         System.out.print("Submenu yang ingin dipilih: ");
         submenu2 = input.nextInt();
-        while (submenu2 > 3 || submenu2 < 1)
+        while (submenu2 > 2 || submenu2 < 1)
         {
             System.out.print("Ulangi submenu yang ingin dipilih: ");
             submenu2 = input.nextInt();
@@ -220,7 +215,7 @@ public class Main {
     private static void getSubmenu3() {
         System.out.print("Submenu yang ingin dipilih: ");
         submenu3 = input.nextInt();
-        while (submenu3>3 || submenu3<1)
+        while (submenu3 > 2 || submenu3 < 1)
         {
             System.out.print("Ulangi submenu yang ingin dipilih: ");
             submenu3 = input.nextInt();
