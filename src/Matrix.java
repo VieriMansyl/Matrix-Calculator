@@ -103,7 +103,7 @@ public class Matrix {
                         output.print(col2p(j));
                     }
                     else {
-                        if (this.Mat[i][j] != 1d) output.printf("%.2f", this.Mat[i][j]);
+                        if (this.Mat[i][j] != 1d || j == 0) output.printf("%.2f", this.Mat[i][j]);
                         output.print(col2p(j));
                         foundNonZero = true;
                     }
