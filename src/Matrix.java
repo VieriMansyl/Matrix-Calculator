@@ -115,7 +115,7 @@ public class Matrix {
         output.flush();
     }
 
-    //Menentukan apakah seluruh elemen kolom ke-row bernilai 0 atau tidak
+    //Menentukan baris yang memiliki nilai pada kolom ke - col
     private int isColZero(int row , int col){
         boolean isfound = false;
 
@@ -167,7 +167,7 @@ public class Matrix {
         }
     }
     
-    //konversi kolom ke 0 disesuaikan pada baris ke-row tersebut
+    //konversi elemen menjadi 0 yang berada di bawah 1 utama disesuaikan pada seluruh row
     private void makeZero(int row , int col , int pass){
         int j = col;
         double divisor =  this.Mat[pass][j];
