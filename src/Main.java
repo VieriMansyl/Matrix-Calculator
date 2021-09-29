@@ -196,7 +196,7 @@ public class Main {
         outTerminal.println("---------------------------------");
         outTerminal.println("            SUBMENU 3            ");
         outTerminal.println("---------------------------------");
-        outTerminal.println("1. Metode umum");
+        outTerminal.println("1. Metode adjoin matriks");
         outTerminal.println("2. Metode eliminasi Gauss-Jordan");
         outTerminal.println("---------------------------------");
         outTerminal.flush();
