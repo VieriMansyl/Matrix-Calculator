@@ -228,9 +228,14 @@ public class Matrix {
     }
 
     //optimasi matriks
-    private void optimizeMat(){
-        if (this.row != this.col-1){
-            this.row = this.col -1;
+    private void optimizeMat(boolean isbefore){
+        if (isbefore){
+            if (this.row < this.col-1)      {this.row = this.col -1;}
+        }
+        else if (this.row >= this.col-1){
+            while ((this.row >= this.col - 1) && this.isLastRowZero()) {
+                    if (this.Mat[this.row - 1][this.col - 1] == 0)      {this.row -= 1;}
+            }
         }
     }
 
@@ -239,7 +244,7 @@ public class Matrix {
         int row;                    //membaca tiap baris matriks m
         int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
 
-        for (pass=0 ; pass < this.row ; pass++){
+        for (pass=0 ; pass < this.row ; pass++) {
             row = pass;
             boolean isChange = true;
 
@@ -256,14 +261,18 @@ public class Matrix {
                 if (row > pass && isChange) {
                     //prekondisi : selalu berada dibawah 1 utama
                     //membentuk nilai 0 dibawah 1 utama disesuaikan pada baris ke-row tersebut
-                    this.makeZero(row, colEff,pass);
+                    this.makeZero(row, colEff, pass);
 
-                } else if (!isChange) {row = this.row;}
+                } else if (!isChange) {
+                    row = this.row;
+                }
 
                 row++;
             }
             colEff++;
         }
+        //optimasi ukuran matriks
+        this.optimizeMat(false);
     }
 
     public void gaussJordan(){
@@ -276,12 +285,14 @@ public class Matrix {
                 }
             }
         }
+        //optimasi ukuran matriks
+        this.optimizeMat(false);
     }
 
     //penyelesaian SPL - Gauss
     public Matrix solveGauss(){
-        //optimasi matriks untuk membentuk matriks Augmented dengan ukuran N x N+1
-        this.optimizeMat();
+        //optimasi ukuran matriks
+        this.optimizeMat(true);
         //membentuk matriks mengikuti metode Gauss
         this.gauss();
         boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
@@ -296,8 +307,8 @@ public class Matrix {
     }
 
     public Matrix solveGaussJordan() {
-        //optimasi matriks untuk membentuk matriks Augmented dengan ukuran N x N+1
-        this.optimizeMat();
+        //optimasi ukuran matriks
+        this.optimizeMat(true);
         //membentuk matriks mengikuti metode Gauss
         this.gaussJordan();
         boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
