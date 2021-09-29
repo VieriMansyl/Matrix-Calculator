@@ -232,9 +232,11 @@ public class Matrix {
         if (isbefore){
             if (this.row < this.col-1)      {this.row = this.col -1;}
         }
-        else if (this.row >= this.col-1){
-            while ((this.row >= this.col - 1) && this.isLastRowZero()) {
-                    if (this.Mat[this.row - 1][this.col - 1] == 0)      {this.row -= 1;}
+        else{
+            while ((this.row > this.col - 1) && this.isLastRowZero()) {
+                    if (this.Mat[this.row - 1][this.col - 1] == 0){
+                        this.row -= 1;
+                    }
             }
         }
     }
