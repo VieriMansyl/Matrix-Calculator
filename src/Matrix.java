@@ -118,9 +118,10 @@ public class Matrix {
     //Menentukan baris yang memiliki nilai pada kolom ke - col
     private int isColZero(int row , int col){
         boolean isfound = false;
+        double epsilon = 0.000001d;
 
         while (row < this.row && !isfound){
-            if(this.Mat[row][col]!=0){
+            if(Math.abs(this.Mat[row][col]) > epsilon){
                 isfound = true;
             }else{
                 row++;
@@ -146,7 +147,7 @@ public class Matrix {
         double temp;
         boolean ischange = false;
         
-        change_row = this.isColZero(row , col);
+        change_row = this.isColZero(row , col);     //memberikan nilai baris yang elemen pada col memiliki nilai != 0
         if ((change_row != row) && (change_row != this.row)){
             ischange = true;
             for (col=0 ; col < this.col ; col++){
@@ -229,13 +230,18 @@ public class Matrix {
 
     //optimasi matriks
     private void optimizeMat(boolean isbefore){
+        boolean isNoSolusi = false;
+        double epsilon = 0.000001d;
+
         if (isbefore){
             if (this.row < this.col-1)      {this.row = this.col -1;}
         }
         else{
-            while ((this.row > this.col - 1) && this.isLastRowZero()) {
-                    if (this.Mat[this.row - 1][this.col - 1] == 0){
+            while ((this.row > this.col - 1) && this.isLastRowZero() && !isNoSolusi) {
+                    if (Math.abs(this.Mat[this.row - 1][this.col - 1]) < epsilon){
                         this.row -= 1;
+                    }else if ( Math.abs(this.Mat[this.row - 1][this.col - 1]-1) < epsilon){
+                        isNoSolusi = true;
                     }
             }
         }
@@ -245,13 +251,13 @@ public class Matrix {
         int pass;                   //membaca setiap baris matriks m untuk setiap pembacaan 1 utama
         int row;                    //membaca tiap baris matriks m
         int colEff = 0;             //kolom efektif , dimana 1 utama belum terdefinisi
+        double epsilon = 0.00001d;
 
         for (pass=0 ; pass < this.row ; pass++) {
             row = pass;
             boolean isChange = true;
-
             while (row < this.row) {
-                if (this.Mat[row][colEff] == 0 && row == pass) {
+                if (Math.abs(this.Mat[row][colEff]) < epsilon && row == pass) {
                     //memutar baris apabila m[row][col] = 0
                     //isChange menjadi penentu terjadi pertukaran baris atau tidak
                     isChange = this.changeplace(row, colEff);
@@ -273,6 +279,7 @@ public class Matrix {
             }
             colEff++;
         }
+
         //optimasi ukuran matriks
         this.optimizeMat(false);
     }
@@ -313,6 +320,7 @@ public class Matrix {
         this.optimizeMat(true);
         //membentuk matriks mengikuti metode Gauss
         this.gaussJordan();
+
         boolean noSolution = (this.isLastRowZero() && this.Mat[this.row-1][this.col-1] != 0);
         Matrix solusi;
 
