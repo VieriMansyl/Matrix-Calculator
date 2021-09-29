@@ -250,7 +250,7 @@ public class Main {
     private static void getInputPathname() {
         System.out.print("Filename: ");
         String filename = input.next();
-        pathname = "test/" + filename;
+        pathname = "../test/" + filename;
     }
 
     private static void printInputChoice() {
@@ -296,7 +296,7 @@ public class Main {
     private static void getOutputPathname() {
         System.out.print("Filename: ");
         String filename = input.next();
-        pathname = "testOutput/" + filename;
+        pathname = "../testOutput/" + filename;
     }
 
     private static Matrix readMatrixN() {

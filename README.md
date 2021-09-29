@@ -16,20 +16,23 @@ yang berisikan implementasi secara algoritmik terkait materi aljabar linier,
 yaitu SPL, determinan, matriks balikan, dan disertai beberapa aplikasi SPL,
 yaitu interpolasi polinom dan regresi linier berganda, takkan menggoyahkan kami.
 
-## Direktori
+## Struktur Direktori
 
-- bin: menyimpan hasil kompilasi menjadi bytecode Matrix.class dan Main.class
+- bin: menyimpan hasil kompilasi Main.class dan package packMatrix yang berisi Matrix.class
 - doc: berisi laporan tugas besar
 - lib: berisi library Matrix.jar
-- src: berisi source code Matrix.java dan Main.java
+- src: berisi source code Main.java dan package packMatrix yang berisi Matrix.java
 - test: berisi masukan data uji *.txt berdasarkan soal studi kasus
 - testOutput: berisi luaran data uji *.txt
 
 ##  Cara Menggunakan
-Di dalam folder bin terdapat dua buah file bytecode, yaitu Matrix.class dan Main.class
-yang terbentuk dari dua buah file source code pada folder src, yaitu Matrix.java dan Main.java.
-File Matrix berfungsi sebagai library, sedangkan file Main berfungsi sebagai program utamanya.
-Silakan jalankan Main.class pada folder bin untuk menggunakan program utamanya.
+Di dalam folder bin terdapat sebuah file bytecode, yaitu Main.class
+hasil dikompilasi dari Main.java bersama library Matrix.jar.
+Library ini mengandung sebuah package yang bernama packMatrix, yang berisi
+class Matrix.
+
+Silakan jalankan Main.class pada folder bin untuk menggunakan program utamanya
+melalui terminal/console, kemudian masuk ke folder bin, dan jalankan `java Main`.
 
 Tampilan pertama program utama adalah menu dengan enam pilihan:
 1. Menghitung solusi sistem persamaan linier
