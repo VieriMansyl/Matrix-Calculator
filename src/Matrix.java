@@ -613,44 +613,37 @@ public class Matrix {
     public void interpolasiPolinom(double x, PrintWriter output) {
         Matrix L = new Matrix();
         L.row = this.row;
-        L.col = 4;
+        L.col = L.row + 1;
 
         for (int i = 0; i < L.row; i++) {
-            L.Mat[i][0] = 1;
+            L.Mat[i][L.col - 1] = this.Mat[i][1];
+            for (int j = 0; j < L.col - 1; j++) {
+                L.Mat[i][j] = Math.pow(this.Mat[i][0], j);
+            }
         }
 
-        for (int j = 0; j < L.row; j++) {
-            L.Mat[j][1] = this.Mat[j][0];
-        }
-
-        for (int k = 0; k < L.row; k++) {
-            L.Mat[k][2] = this.Mat[k][0] * this.Mat[k][0];
-        }
-        for (int l = 0; l < L.row; l++) {
-            L.Mat[l][3] = this.Mat[l][1];
-        }
         L.gaussJordan();
         double result = 0;
         output.print("P(x)= ");
-        for (int a = 0; a < row; a++) {
-            output.printf("%.4f",L.Mat[a][3]);
-            if(a==1){
+        for (int a = 0; a < L.row; a++) {
+            output.printf("%.4f", L.Mat[a][L.col-1]);
+            if (a == 1) {
                 output.print("x");
+            } else if (a > 1) {
+                output.printf("x^%d", a);
             }
-            else if (a>1){
-                output.printf("x^%d",a);
-            }
-            if (a<row-1){
-                if(L.Mat[a+1][3]>=0){
+            if (a < row - 1) {
+                if (L.Mat[a + 1][L.col-1] >= 0) {
                     output.print("+");
                 }
             }
-            result += L.Mat[a][3] * Math.pow(x,a);
+            result += L.Mat[a][L.col-1] * Math.pow(x, a);
         }
         output.println();
-        output.printf("P(%f) = %.4f",x,result);
+        output.printf("P(%f) = %.4f", x, result);
         output.flush();
     }
+
 
 
     //regresi linier berganda
