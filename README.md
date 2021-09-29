@@ -43,3 +43,4 @@ Masukan matriks untuk setiap fungsionalitas program utama dapat melalui dua meto
 yaitu melalui terminal/console dan melalui file *.txt yang disimpan dalam folder test.
 Luaran dari setiap fungsionalitas akan ditampilkan melalui terminal/console, 
 dengan pilihan dapat menyimpan luaran ke dalam file *.txt dalam folder testOutput.
+Catatan: filename yang diinputkan termasuk extensionnya, misalnya filename1.txt.
