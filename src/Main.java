@@ -246,7 +246,7 @@ public class Main {
         System.out.println();
     }
 
-    private static void getPathname() {
+    private static void getInputPathname() {
         System.out.print("Filename: ");
         String filename = input.next();
         pathname = "test/" + filename;
@@ -281,7 +281,7 @@ public class Main {
         }
 
         if (outputChoice.equalsIgnoreCase("Y")) {
-            getPathname();
+            getOutputPathname();
             try {
                 outFile = new PrintWriter(pathname);
             } catch (FileNotFoundException e) {
@@ -290,6 +290,12 @@ public class Main {
             }
         }
         else outFile = null;
+    }
+
+    private static void getOutputPathname() {
+        System.out.print("Filename: ");
+        String filename = input.next();
+        pathname = "testOutput/" + filename;
     }
 
     private static Matrix readMatrixN() {
@@ -304,7 +310,7 @@ public class Main {
             m.readMatrixKeyboard();
         }
         else {
-            getPathname();
+            getInputPathname();
             m.readMatrixFile(pathname);
         }
         return m;
@@ -323,7 +329,7 @@ public class Main {
             m.readMatrixKeyboard();
         }
         else {
-            getPathname();
+            getInputPathname();
             m.readMatrixFile(pathname);
         }
         return m;
@@ -341,7 +347,7 @@ public class Main {
             m.readMatrixKeyboard();
         }
         else {
-            getPathname();
+            getInputPathname();
             m.readMatrixFile(pathname);
         }
         return m;
