@@ -23,7 +23,7 @@ public class Main {
             getSubmenu1();
 
             m = readMatrixMN();
-            if (submenu1 == 1) solution = m.solveGauss();
+            if (submenu1 == 1) {solution = m.solveGauss();}
             else if (submenu1 == 2) solution = m.solveGaussJordan();
             else if (submenu1 == 3) solution = m.solveInverse();
             else if (submenu1 == 4) solution = m.solveCramer();
