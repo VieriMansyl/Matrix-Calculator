@@ -22,7 +22,7 @@ yaitu interpolasi polinom dan regresi linier berganda, takkan menggoyahkan kami.
 - doc: berisi laporan tugas besar
 - lib: berisi library Matrix.jar
 - src: berisi source code Matrix.java dan Main.java
-- test: berisi masukan data uji *.txt
+- test: berisi masukan data uji *.txt berdasarkan soal studi kasus
 - testOutput: berisi luaran data uji *.txt
 
 ##  Cara Menggunakan
