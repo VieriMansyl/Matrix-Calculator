@@ -1,3 +1,5 @@
+package packMatrix;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -7,14 +9,14 @@ import java.lang.Math;
 public class Matrix {
 
     /** Atribut **/
-    int row;
-    int col;
-    double[][] Mat = new double[100][100];
+    public int row;
+    public int col;
+    public double[][] Mat = new double[100][100];
 
     /** Method **/
 
     // Konstruktor
-    Matrix() {
+    public Matrix() {
         int i,j;
         for (i=0; i<100; i++) {
             for (j=0; j<100; j++) {
