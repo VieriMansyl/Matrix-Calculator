@@ -81,7 +81,7 @@ public class Matrix {
     public void displayMatrix(PrintWriter output) {
         for (int i=0; i<this.row; i++) {
             for (int j=0; j<this.col; j++) {
-                output.print(this.Mat[i][j]);
+                output.printf("%.2f", this.Mat[i][j]);
                 if (j != this.col-1) output.print(" ");
             }
             output.println();
