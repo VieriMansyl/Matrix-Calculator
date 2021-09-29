@@ -32,20 +32,28 @@ public class Main {
                 outTerminal.println("SPL tidak dapat diselesaikan dengan metode ini.");
                 outTerminal.flush();
                 getOutFile();
-                outFile.println("SPL tidak dapat diselesaikan dengan metode ini.");
-                outFile.flush();
+                if (outFile != null){
+                    outFile.println("SPL tidak dapat diselesaikan dengan metode ini.");
+                    outFile.flush();
+                }
+
             }
             else if (solution == null) {
                 outTerminal.println("SPL tidak memiliki solusi.");
                 outTerminal.flush();
                 getOutFile();
-                outFile.println("SPL tidak memiliki solusi.");
-                outFile.flush();
+                if (outFile != null){
+                    outFile.println("SPL tidak memiliki solusi.");
+                    outFile.flush();
+                }
+
             }
             else {
                 solution.displayMatrixSolution(outTerminal);
                 getOutFile();
-                solution.displayMatrixSolution(outFile);
+                if (outFile != null) {
+                    solution.displayMatrixSolution(outFile);
+                }
             }
         }
 
@@ -60,8 +68,11 @@ public class Main {
             outTerminal.printf("Nilai determinan matriks adalah %.4f\n",det);
             outTerminal.flush();
             getOutFile();
-            outFile.printf("Nilai determinan matriks adalah %.4f\n",det);
-            outFile.flush();
+            if (outFile != null){
+                outFile.printf("Nilai determinan matriks adalah %.4f\n",det);
+                outFile.flush();
+            }
+
         }
 
         else if (menu == 3) {
@@ -87,12 +98,18 @@ public class Main {
                 outTerminal.println("Tidak ada balikan. Determinan matriks = 0");
                 outTerminal.flush();
                 getOutFile();
-                outFile.println("Tidak ada balikan. Determinan matriks = 0");
-                outFile.flush();
+                if (outFile != null){
+                    outFile.println("Tidak ada balikan. Determinan matriks = 0");
+                    outFile.flush();
+                }
+
             } else {
                 Mnew.displayMatrix(outTerminal);
                 getOutFile();
-                Mnew.displayMatrix(outFile);
+                if (outFile != null){
+                    Mnew.displayMatrix(outFile);
+                }
+
             }
 
         }
@@ -104,7 +121,10 @@ public class Main {
             double x = input.nextDouble();
             m.interpolasiPolinom(x, outTerminal);
             getOutFile();
-            m.interpolasiPolinom(x, outFile);
+            if (outFile != null){
+                m.interpolasiPolinom(x, outFile);
+            }
+
         }
 
         else if (menu == 5) {
@@ -116,9 +136,12 @@ public class Main {
             outTerminal.printf("taksiran y = %f\n",taksiran);
             outTerminal.flush();
             getOutFile();
-            solusi.displayRegSPL(outFile);
-            outFile.printf("tkasiran y = %f\n",taksiran);
-            outFile.flush();
+            if (outFile != null){
+                solusi.displayRegSPL(outFile);
+                outFile.printf("tkasiran y = %f\n",taksiran);
+                outFile.flush();
+            }
+
         }
 
         else {
