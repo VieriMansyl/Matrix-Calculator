@@ -90,20 +90,21 @@ public class Matrix {
     }
 
     public void displayMatrixSolution(PrintWriter output) {
+        double epsilon = 0.000001d;
         boolean foundNonZero;
         for (int i=0; i<this.row; i++) {
             output.printf("x%d = ", i+1);
             foundNonZero = false;
             for (int j=0; j<this.col; j++) {
-                if (this.Mat[i][j] != 0d) {
+                if (Math.abs(this.Mat[i][j]) > epsilon) {
                     if (foundNonZero) {
                         if (this.Mat[i][j] < 0d) output.print(" - ");
                         else output.print(" + ");
-                        if (this.Mat[i][j] != 1d) output.printf("%.2f", Math.abs(this.Mat[i][j]));
+                        if (Math.abs(this.Mat[i][j] - 1) > epsilon) output.printf("%.2f", Math.abs(this.Mat[i][j]));
                         output.print(col2p(j));
                     }
                     else {
-                        if (this.Mat[i][j] != 1d || j == 0) output.printf("%.2f", this.Mat[i][j]);
+                        if (Math.abs(this.Mat[i][j] - 1) > epsilon || j == 0) output.printf("%.2f", this.Mat[i][j]);
                         output.print(col2p(j));
                         foundNonZero = true;
                     }
