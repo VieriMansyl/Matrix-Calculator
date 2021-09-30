@@ -20,8 +20,8 @@ yaitu interpolasi polinom dan regresi linier berganda, takkan menggoyahkan kami.
 
 - bin: menyimpan hasil kompilasi Main.class dan package packMatrix yang berisi Matrix.class
 - doc: berisi laporan tugas besar
-- lib: berisi library Matrix.jar
-- src: berisi source code Main.java dan package packMatrix yang berisi Matrix.java
+- lib: berisi library Matrix.jar yang terdiri dari package packMatrix
+- src: berisi source code Main.java dan Matrix.java, serta package packMatrix yang berisi Matrix.java
 - test: berisi masukan data uji *.txt berdasarkan soal studi kasus
 - testOutput: berisi luaran data uji *.txt
 
@@ -41,6 +41,8 @@ Tampilan pertama program utama adalah menu dengan enam pilihan:
 4. Menghitung persamaan interpolasi polinomial dan taksiran nilainya
 5. Menghitung persamaan regresi linier berganda dan taksiran nilainya
 6. Keluar dari program
+
+Fungsionalitas program utama kemudian dapat diakses secara intuitif.
 
 Masukan matriks untuk setiap fungsionalitas program utama dapat melalui dua metode,
 yaitu melalui terminal/console dan melalui file *.txt yang disimpan dalam folder test.
